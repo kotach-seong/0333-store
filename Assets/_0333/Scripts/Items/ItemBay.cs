@@ -78,7 +78,7 @@ namespace Night0333
 
         void Update()
         {
-            if (rerollWithR && GameInput.RerollDown) PlaceRandom(Environment.TickCount, testAnomalyChance);
+            if (rerollWithR && Application.isEditor && GameInput.RerollDown) PlaceRandom(Environment.TickCount, testAnomalyChance);   // 시험용(에디터에서만)
         }
 
         /// <summary>손님이 살 물건을 랜덤으로 고른다(1~8개, 같은 물건 최대 3개).</summary>

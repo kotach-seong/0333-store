@@ -47,18 +47,8 @@ namespace Night0333
         public static bool NoShake { get { Load(); return !shake; } }
         public static Lang Language { get { Load(); return language; } }
 
-        /// <summary>처음 켰을 때 언어: 컴퓨터 언어가 한국어면 한국어, 중국어면 간체, 그 밖에는 영어.</summary>
-        static Lang SystemLanguage()
-        {
-            switch (Application.systemLanguage)
-            {
-                case UnityEngine.SystemLanguage.Korean: return Lang.Ko;
-                case UnityEngine.SystemLanguage.Chinese:
-                case UnityEngine.SystemLanguage.ChineseSimplified:
-                case UnityEngine.SystemLanguage.ChineseTraditional: return Lang.Zh;
-                default: return Application.isEditor ? Lang.Ko : Lang.En;
-            }
-        }
+        /// <summary>처음 켰을 때 언어(사용자 결정): 컴퓨터 언어와 상관없이 영어. 설정에서 바꾸면 그 언어가 저장된다.</summary>
+        const Lang FirstLanguage = Lang.En;
 
         static void Load()
         {
@@ -72,7 +62,7 @@ namespace Night0333
             reduceFlicker = PlayerPrefs.GetInt(FlickerKey, 0) != 0;
             noBlood = PlayerPrefs.GetInt(BloodKey, 0) != 0;
             shake = PlayerPrefs.GetInt(ShakeKey, 1) != 0;
-            language = PlayerPrefs.HasKey(LangKey) ? (Lang)Mathf.Clamp(PlayerPrefs.GetInt(LangKey), 0, 2) : SystemLanguage();
+            language = PlayerPrefs.HasKey(LangKey) ? (Lang)Mathf.Clamp(PlayerPrefs.GetInt(LangKey), 0, 2) : FirstLanguage;
         }
 
         static int SystemW => Display.main != null && Display.main.systemWidth > 0 ? Display.main.systemWidth : Screen.currentResolution.width > 0 ? Screen.currentResolution.width : 1920;

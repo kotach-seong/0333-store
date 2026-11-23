@@ -96,7 +96,7 @@
 - 깜빡임 줄이기: 형광등 깜빡임과 번쩍임을 부드럽게 합니다
 - 혈흔 없애기: 피 자국을 숨깁니다. 판정에 쓰는 피는 검은 얼룩으로 바뀝니다
 - 화면 흔들림 켜기 / 끄기
-- 언어(한국어 / English / 简体中文)
+- 언어(English / 한국어 / 简体中文): 처음 켜면 English로 나오고, 고른 언어는 저장됩니다
 
 | | |
 |:---:|:---:|
@@ -110,6 +110,10 @@
 3. 장면이 깨져 보이면 메뉴 **0333 → 계산대 다시 만들기 (Rebuild Checkout)** 로 다시 만듭니다.
 
 에디터에서만 쓰는 시험용 키: **F3**을 누르면 시계가 03:32로 건너뜁니다.
+
+### Windows용 exe 만들기
+
+메뉴 **0333 → Windows 빌드 만들기 (Build Windows exe)** 를 누르면 `Build/Windows/0333.exe`가 만들어집니다. 그 옆에 플레이어용 안내(`README.txt`)와 글꼴·소리 라이선스(`Licenses/`)가 함께 들어갑니다. 배포할 때는 이 폴더를 통째로 압축해서 주면 됩니다. `Build/` 폴더는 저장소에 올리지 않습니다.
 
 ### 폴더
 
@@ -147,6 +151,6 @@ docs/screenshots/  이 문서에 쓴 게임 화면(빌드 때 찍은 미리보�
 **03:33 — Late-Night Convenience Store** is a 2D pixel-art horror game. You work the night shift at a 24-hour convenience store for 7 nights. At the counter, check each customer's items, receipt and CCTV footage. Then mark the transaction as normal or not. Every night at **3:33 a.m.**, whatever comes to the counter, never close the transaction as "Normal."
 
 - Engine: Unity 6000.3.25f1 (URP 2D). Open the project, then play `Assets/_0333/Scenes/Store.unity`.
-- Languages: Korean / English / Simplified Chinese (Settings → Language).
+- Languages: English (default) / Korean / Simplified Chinese (Settings → Language).
 - Controls: mouse to look, left-click to open things and press buttons, drag items down to scan, 1/2 to pick replies, Space/Enter to advance dialogue, Esc to pause.
 - Fonts: Galmuri and Fusion Pixel Font (both SIL OFL 1.1).

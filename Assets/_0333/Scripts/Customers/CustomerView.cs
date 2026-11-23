@@ -83,7 +83,7 @@ namespace Night0333
 
         void Update()
         {
-            if (toggleWithC && GameInput.CustomerToggleDown && !Busy) { if (Visible) Leave(); else Enter(); }
+            if (toggleWithC && Application.isEditor && GameInput.CustomerToggleDown && !Busy) { if (Visible) Leave(); else Enter(); }   // 시험용(에디터에서만)
 
             // 가끔 몸을 한쪽으로 옮겼다 돌아오기
             if (Time.time >= nextShift)
