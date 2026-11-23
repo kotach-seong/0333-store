@@ -1,0 +1,34 @@
+# 制作人员（主菜单 → 制作人员）— 简体中文。标记与 Credits.txt 相同：
+# "@" 大标题 / "##" 小标题 / "%" 小字说明 / "!" 最后的致谢（停在画面中央）/ 空行：间隔
+
+@03:33
+
+## 制作
+kotach
+
+## 美术
+kotach
+
+## 音效
+kotach
+
+## 电话语音素材
+beetlemuse (Freesound)
+
+## 字体
+Galmuri
+© 2019–2025 Lee Minseo (quiple)
+SIL Open Font License 1.1
+
+缝合像素字体 (Fusion Pixel Font)
+© 2022 TakWolf
+SIL Open Font License 1.1
+
+## 制作工具
+Unity
+
+%本游戏中的故事与人物均为虚构。
+
+
+
+!感谢游玩

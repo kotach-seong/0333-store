@@ -1,0 +1,77 @@
+# The manager's call before each shift (00:00) — English.
+# Same layout as PhoneCalls.txt: the keys (점장, 수칙, 낙서) stay in Korean.
+#   점장: line      one dialogue box
+#   수칙: rule      written into the notebook's rules page, numbered
+#   낙서: scribble  written into the notebook without a number
+
+[DAY 1]
+점장: Hello? You're the new night shift, right? I'm the manager.
+점장: It's your first night, so just remember two things.
+점장: One. Look carefully at what customers put on the counter.
+점장: If there's anything mixed in that we don't sell... don't take it.
+점장: Two. Check the CCTV once for every customer you ring up.
+점장: If the customer in front of you isn't on the screen,
+점장: or the one on screen looks different from what you see,
+점장: or something that shouldn't be there shows up behind them or outside,
+점장: mark "No" on the checklist and send them off. Don't talk to them.
+점장: And... 3:33 in the morning.
+점장: Whatever comes to the counter then, never close it as "Normal."
+점장: It's always "No." Don't stall.
+점장: I'll write the rules in your notebook. Your relief comes at 6. Just hold out till then.
+수칙: Only ring up a customer once they're at the counter.
+수칙: Do not approve if anything on the counter isn't from our store.
+수칙: Do not approve if the receipt and CCTV show a different number of people.
+수칙: Do not approve if the customer on CCTV differs from the one in front of you.
+수칙: Never close the 3:33 a.m. transaction as Normal.
+
+[DAY 2]
+점장: Good work yesterday. ...Nothing happened, right?
+점장: Starting today, you check the receipt too.
+점장: The receipt total and the amount on the POS screen. They have to match.
+점장: Sometimes they don't. It's not the machine. Don't take those.
+수칙: Do not approve if the receipt total differs from the POS screen.
+
+[DAY 3]
+점장: ...It's me. Today, it's the time.
+점장: Check that the time printed on the receipt matches the clock.
+점장: If it shows a time that hasn't come yet, or one long gone,
+점장: that customer shouldn't be here right now.
+점장: Don't take it. Got it?
+수칙: Do not approve transactions from the future or the past.
+
+[DAY 4]
+점장: Getting used to it? ...You sound tired.
+점장: There's a line at the top of the receipt describing the customer.
+점장: Check that it matches the person standing in front of you.
+점장: A man printed as a woman, or the letters all garbled.
+점장: And the receipt number. It has to go in order.
+점장: If it repeats or skips, that's no good either.
+점장: ...The one before you didn't follow this.
+수칙: Do not approve if the receipt's customer differs from the one in front of you.
+수칙: Do not approve if the receipt number repeats or skips.
+
+[DAY 5]
+점장: This is the last thing I'll teach you. Listen carefully.
+점장: The receipt can't list anything that wasn't on the counter.
+점장: Or any strange name you've never seen before.
+점장: If they hand you something weird instead of money... that's not money. You know that.
+점장: And if there's blood on the receipt, that goes without saying.
+점장: Now you know everything I know.
+수칙: Do not approve if the receipt lists items that weren't on the counter.
+수칙: Do not approve if you're given something that isn't money.
+수칙: Do not approve a receipt with blood on it.
+
+[DAY 6]
+점장: ...Hello? You're still there, right?
+점장: Strange. I went through yesterday's CCTV... you weren't alone.
+점장: (static) ...No. I must have seen wrong.
+점장: Just follow the rules. Just follow the rules. Just the rules, just the rules, just the rules—
+점장: (click)
+낙서: Just follow the rules
+
+[DAY 7]
+점장: ......
+점장: (breathing)
+점장: Whoever comes at 6... look them straight in the face.
+점장: I worked there for 7 days too.
+점장: (click)

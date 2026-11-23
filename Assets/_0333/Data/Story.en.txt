@@ -1,0 +1,43 @@
+# 03:33 opening and ending — English. Same layout as Story.txt:
+# the keys before ":" (제목, 줄, 점장, 나, 아침 알바생, 모르는 번호) stay in Korean; the game shows the translated names.
+# A line starting with "(" is narration without a name.
+
+[공고]
+제목: Night Shift Clerk
+줄: 7 days, short-term
+줄: ₩33,330 / hour
+줄: Same-day pay
+줄: Hours 00:00 ~ 06:00
+줄: Contact: Manager
+
+[오프닝]
+점장: ...Hello, convenience store.
+나: Hi, I'm calling about the ad. The night shift job.
+점장: Ah, yes. Can you start tomorrow night at midnight?
+나: Yes, I can.
+점장: It's 7 days. You can't miss a single one.
+나: ...Okay.
+점장: The key is under the umbrella stand by the door. Nobody will be in the store.
+점장: I'll call you when you get there. I'll tell you what to do then.
+점장: Oh, and...
+점장: Once you finish all 7 days, I'll explain everything.
+
+[교대]
+아침 알바생: ......
+아침 알바생: 7 days.
+아침 알바생: ...You made it.
+(They take off their name tag and set it on the counter.)
+아침 알바생: Go now.
+아침 알바생: Don't look back.
+
+[엔딩]
+나: ...Hello, convenience store.
+모르는 번호: Hi, I'm calling about the ad. The night shift job.
+나: Ah, yes. Can you start tomorrow night at midnight?
+모르는 번호: Yes, I can.
+나: It's 7 days. You can't miss a single one.
+모르는 번호: ...Okay.
+나: The key is under the umbrella stand by the door. Nobody will be in the store.
+나: I'll call you when you get there. I'll tell you what to do then.
+나: Oh, and...
+나: Once you finish all 7 days, I'll explain everything.

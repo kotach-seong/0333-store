@@ -8,27 +8,34 @@ namespace Night0333.EditorTools
     ///
     /// 매장을 상자(Box)들로 이루어진 간단한 3D 장면으로 만들고, 계산대 안쪽 눈높이에서
     /// 광선을 쏴서 조명·그림자·바닥 반사까지 계산한 뒤, 고정 팔레트로 줄여 픽셀아트로 만든다.
-    ///  - 1 픽셀 = 1 유닛, 한 화면은 480x270, 둘러볼 수 있는 전체 그림은 864x573.
+    ///  - 1 픽셀 = 1 유닛, 한 화면은 640x360(넓은 시야), 둘러볼 수 있는 전체 그림은 1140x640.
     ///  - 평상시(NORMAL): 실내는 밝은 형광등, 창밖은 어두운 밤.
     ///  - 형광등·문짝·유리·계산대는 따로 레이어로 뽑아 나중에 끄거나 움직일 수 있다.
     /// </summary>
     public static partial class StoreArtGenerator
     {
         // ── 화면/월드(픽셀) ───────────────────────────────────
-        public const int ViewW = 480, ViewH = 270;
-        public static readonly RectInt WorldRect = new RectInt(-432, -330, 864, 573);
-        /// <summary>마우스가 화면 중앙일 때의 시선(살짝 아래를 본다).</summary>
-        public static readonly Vector2 Home = new Vector2(0f, -40f);
+        public const int ViewW = 640, ViewH = 360;
+        public static readonly RectInt WorldRect = new RectInt(-570, -380, 1140, 640);
+        /// <summary>
+        /// 게임을 시작했을 때의 시선. 이 화면 하나에 양옆 진열대, 천장 형광등, 계산대 위 소품이 모두 들어온다.
+        /// 여기서 좌우로 250, 위로 114, 아래로 166 픽셀까지 더 둘러볼 수 있다.
+        /// → 왼쪽의 영수증, 오른쪽의 CCTV 화면, 아래의 수첩을 화면 한가운데(조준점)까지 가져올 수 있는 범위.
+        /// </summary>
+        public static readonly Vector2 Home = new Vector2(0f, -34f);
 
         // ── 가상 카메라와 매장(미터) ──────────────────────────
-        const float F = 450f;      // 초점거리(px)
-        const float VPy = 8f;      // 소실점 높이(px)
+        const float F = 333f;      // 초점거리(px). 작을수록 시야가 넓다(광각)
+        const float VPy = 6f;      // 소실점 높이(px)
+        const float PxScale = F / 450f; // 픽셀 단위로 정한 장식 크기를 시야에 맞춰 줄이는 비율
         const float Eye = 1.6f;    // 눈높이
         const float HalfW = 3.6f;  // 매장 폭의 절반
         const float CeilH = 2.8f;  // 천장 높이
         const float BackZ = 8f;    // 정면 유리벽까지 거리
         const float CY = 0.92f;    // 계산대 상판 높이
         const float CZ = 1.85f;    // 계산대 끝(손님 쪽)
+        const float CZNear = 0.62f; // 계산대 안쪽 모서리(알바생 쪽)
+        const float CounterLeftEnd = -2.45f; // 계산대 왼쪽 끝. 여기서 왼쪽 벽까지가 통로
 
         static readonly Rect WinL = Rect.MinMaxRect(-2.55f, 0.7f, -1.05f, 2.5f);
         static readonly Rect WinR = Rect.MinMaxRect(1.05f, 0.7f, 2.55f, 2.5f);
@@ -46,7 +53,8 @@ namespace Night0333.EditorTools
         static readonly Vector3 AmbientCol = new Vector3(0.94f, 0.99f, 0.95f);
         static readonly Vector3 NightCol = new Vector3(0.03f, 0.04f, 0.065f);
 
-        public enum Group { Outside, Interior, Lights, Foreground }
+        /// <summary>Ui는 매장 그림이 아니라 화면에 붙는 것(CCTV 크게 보기)이라 화면 중심 기준 좌표를 쓴다.</summary>
+        public enum Group { Outside, Interior, Lights, Foreground, Ui }
 
         public class Layer
         {
@@ -88,12 +96,19 @@ namespace Night0333.EditorTools
             public Vector3 Albedo, Emit;
             public float Alpha, Gloss;
             public int Target;      // 0: 자기 레이어, TGlass/TDoorL/TDoorR: 유리·문짝 레이어
+            public bool IsScreen;   // CCTV 모니터 화면(채널별 그림은 따로 만든다)
+            public Vector2 ScreenUV;
 
             public Vector3 L => P - B.Min;      // 상자 기준 좌표
             public Vector3 S => B.Max - B.Min;  // 상자 크기
         }
 
-        struct LightS { public Vector3 P, Col; public bool Down; }
+        struct LightS
+        {
+            public Vector3 P, Col;
+            public bool Down;         // 아래로만 비추는 천장 등
+            public bool OutdoorOnly;  // 매장 밖만 비춘다(가로등, 처마 등)
+        }
 
         static readonly List<Box> boxes = new List<Box>();
         static readonly List<LightS> lights = new List<LightS>();
@@ -114,9 +129,41 @@ namespace Night0333.EditorTools
             }
         }
 
+        // ── 형광등 상태별 그림(흔적 3: 형광등이 하나씩 나간다) ──
+        /// <summary>
+        /// All: 평소(형광등 6개 + 계산대 위 조명).
+        /// Front: 계산대 쪽 앞줄 2개와 계산대 위 조명만 켜짐(안쪽은 어둡다).
+        /// Off: 형광등이 다 나가 스스로 빛나는 것(비상구, 냉장고, ATM, LED, 모니터)과 창밖에서 새어 드는 빛만 남는다.
+        /// </summary>
+        enum LightMode { All, Front, Off }
+        static LightMode mode = LightMode.All;
+        static bool lightsOff => mode == LightMode.Off;
+        const float DarkAmbK = 0.085f;                                               // 다 꺼지면 주변광이 이만큼만 남는다
+        static readonly Vector3 DarkAmbientCol = new Vector3(0.55f, 0.66f, 0.95f);    // 창밖에서 드는 푸른 밤빛
+        public const string DarkSuffix = "_dark", FrontSuffix = "_front";
+
+        /// <summary>k번 형광등(0·1 앞줄, 2·3 가운데, 4·5 안쪽)이 이 그림에서 켜져 있나.</summary>
+        static bool TubeOn(int k) => mode == LightMode.All || (mode == LightMode.Front && k < TubeX.Length);
+        static float ByMode(float all, float front, float off) => mode == LightMode.All ? all : mode == LightMode.Front ? front : off;
+
+        /// <summary>불 꺼진 가게 레이어(실내·계산대·유리·문짝). 이름은 켜진 레이어 이름 + "_dark".</summary>
+        public static List<Layer> GenerateDark() => GenerateMode(LightMode.Off);
+
+        /// <summary>앞줄만 켜진 가게 레이어(실내·계산대). 이름은 켜진 레이어 이름 + "_front".</summary>
+        public static List<Layer> GenerateFront() => GenerateMode(LightMode.Front);
+
+        static List<Layer> GenerateMode(LightMode m)
+        {
+            mode = m;
+            try { return Generate(); }
+            finally { mode = LightMode.All; }
+        }
+
         // ── 진입점 ────────────────────────────────────────────
         public static List<Layer> Generate()
         {
+            bool dark = mode != LightMode.All;
+            string sfx = mode == LightMode.Off ? DarkSuffix : mode == LightMode.Front ? FrontSuffix : "";
             BuildScene();
 
             RectInt w = WorldRect;
@@ -128,6 +175,8 @@ namespace Night0333.EditorTools
             var doorRC = new Vector3[n]; var doorRA = new float[n];
             var tubeAt = new int[n]; var tubeEmit = new Vector3[n];
             for (int i = 0; i < n; i++) tubeAt[i] = -1;
+            var monC = new Vector3[Cams.Length][]; var monA = new float[Cams.Length][];
+            for (int k = 0; k < Cams.Length; k++) { monC[k] = new Vector3[n]; monA[k] = new float[n]; }
 
             var eye = new Vector3(0f, Eye, 0f);
             for (int y = w.yMin; y < w.yMax; y++)
@@ -144,11 +193,21 @@ namespace Night0333.EditorTools
                     if (s.Target != 0)
                     {
                         // 불투명한 부분(문틀, 포스터)은 조명을 받고, 유리는 얇은 덧칠로만 남긴다
-                        Vector3 oc = s.Alpha >= 1f ? Vector3.Scale(s.Albedo, Light(s.P, s.N)) + s.Emit : s.Albedo;
+                        Vector3 oc = s.Alpha >= 1f ? Vector3.Scale(s.Albedo, Light(s.P, s.N)) + s.Emit : s.Albedo * ByMode(1f, 0.7f, 0.3f);
                         if (s.Target == TGlass) { glassC[i] = oc; glassA[i] = s.Alpha; }
                         else if (s.Target == TDoorL) { doorLC[i] = oc; doorLA[i] = s.Alpha; }
                         else { doorRC[i] = oc; doorRA[i] = s.Alpha; }
                         continue;
+                    }
+
+                    if (s.IsScreen && !dark)
+                    {
+                        // 계산대 모니터 화면: 채널마다 한 장씩 따로 만들어 두고 게임에서 골라 켠다
+                        for (int k = 0; k < Cams.Length; k++)
+                        {
+                            monC[k][i] = CctvLook(FeedColor(Cams[k], s.ScreenUV.x, s.ScreenUV.y, x, y), s.ScreenUV.x, s.ScreenUV.y, x, y, Cams[k].Gain, Cams[k].Outdoor);
+                            monA[k][i] = 1f;
+                        }
                     }
 
                     Vector3 c = Vector3.Scale(s.Albedo, Light(s.P, s.N));
@@ -163,16 +222,60 @@ namespace Night0333.EditorTools
             Outline(interior, false);
             Outline(fg, true);
             PostDetails(interior);
+            if (!dark) SurfaceMask = MakeSurfaceMask(interior);
+
+            void AddTo(List<Layer> into, Layer l) { if (l != null) into.Add(l); }
+            if (dark)
+            {
+                // 형광등 빛을 받는 레이어만(창밖·비·형광등·모니터 화면·CCTV 화면은 켜진 것 그대로 쓴다).
+                // 앞줄만 켜진 그림은 불투명한 실내·계산대만 만든다(유리·문짝은 켜짐/꺼짐 그림을 섞어 쓴다)
+                var variant = new List<Layer>();
+                if (mode == LightMode.Off)
+                {
+                    AddTo(variant, ToLayer("door_leaf_l" + sfx, doorLC, doorLA, 5, Group.Interior));
+                    AddTo(variant, ToLayer("door_leaf_r" + sfx, doorRC, doorRA, 5, Group.Interior));
+                }
+                AddTo(variant, ToLayer("interior" + sfx, interior.C, interior.A, 10, Group.Interior));
+                if (mode == LightMode.Off) AddTo(variant, ToLayer("window_glass" + sfx, glassC, glassA, 11, Group.Interior));
+                AddTo(variant, ToLayer("counter" + sfx, fg.C, fg.A, 50, Group.Foreground));
+                return variant;
+            }
 
             var layers = new List<Layer> { PaintOutside(), PaintRain() };
-            void AddLayer(Layer l) { if (l != null) layers.Add(l); }
+            void AddLayer(Layer l) => AddTo(layers, l);
             AddLayer(ToLayer("door_leaf_l", doorLC, doorLA, 5, Group.Interior));
             AddLayer(ToLayer("door_leaf_r", doorRC, doorRA, 5, Group.Interior));
             AddLayer(ToLayer("interior", interior.C, interior.A, 10, Group.Interior));
             AddLayer(ToLayer("window_glass", glassC, glassA, 11, Group.Interior));
             for (int k = 0; k < TubeZ.Length * TubeX.Length; k++) AddLayer(TubeLayer(k, tubeAt, tubeEmit));
             AddLayer(ToLayer("counter", fg.C, fg.A, 50, Group.Foreground));
+            for (int k = 0; k < Cams.Length; k++) AddLayer(ToLayer(MonitorLayerName(k), monC[k], monA[k], 51, Group.Foreground));
+            layers.AddRange(GenerateCctvUi());
             return layers;
+        }
+
+        /// <summary>
+        /// 코드로 그리는 피가 묻을 수 있는 곳(월드 크기, R: 바닥, G: 벽, B: 진열대). 마지막 Generate()가 만든다.
+        /// 피가 물건(입간판·우산꽂이·냉장고) 앞이나 유리 위에 떠 보이지 않게 쓴다.
+        /// </summary>
+        public static PixelCanvas SurfaceMask { get; private set; }
+
+        static PixelCanvas MakeSurfaceMask(Buf b)
+        {
+            RectInt w = WorldRect;
+            var mask = new PixelCanvas(w);
+            for (int y = 0; y < w.height; y++)
+                for (int x = 0; x < w.width; x++)
+                {
+                    int id = b.Id[y * w.width + x];
+                    if (id < 0) continue;   // 유리·문·계산대·아무것도 없는 곳
+                    string n = boxes[id].Name;
+                    byte r = n == "floor" ? (byte)255 : (byte)0;
+                    byte g = n.StartsWith("wall") ? (byte)255 : (byte)0;
+                    byte bl = n.StartsWith("shelf") ? (byte)255 : (byte)0;
+                    if ((r | g | bl) != 0) mask.Put(w.x + x, w.y + y, new Color32(r, g, bl, 255));
+                }
+            return mask;
         }
 
         /// <summary>모든 레이어를 합친 미리보기(검증용).</summary>
@@ -182,14 +285,39 @@ namespace Night0333.EditorTools
             all.Fill(WorldRect.xMin, WorldRect.yMin, WorldRect.xMax, WorldRect.yMax, new Color32(0, 0, 0, 255));
             var sorted = new List<Layer>(layers);
             sorted.Sort((a, b) => a.Order.CompareTo(b.Order));
-            foreach (var l in sorted) all.Composite(l.Canvas, Vector2Int.zero);
+            foreach (var l in sorted)
+            {
+                if (l.Group == Group.Ui) continue;                                           // 화면에 붙는 그림은 매장 그림이 아니다
+                if (l.Name == MonitorLayerName(1) || l.Name == MonitorLayerName(2)) continue; // 모니터는 1번 채널만
+                all.Composite(l.Canvas, Vector2Int.zero);
+            }
             return all;
+        }
+
+        /// <summary>CCTV 크게 보기 화면을 합친 미리보기(검증용). 뒤에 깔리는 매장은 회색으로 대신한다.</summary>
+        public static PixelCanvas CompositePanel(List<Layer> layers, int channel)
+        {
+            var view = new PixelCanvas(new RectInt(-ViewW / 2, -ViewH / 2, ViewW, ViewH));
+            view.Fill(-ViewW / 2, -ViewH / 2, ViewW / 2, ViewH / 2, new Color32(120, 126, 118, 255));
+            foreach (var l in layers)
+                if (l.Name == FullFeedName(channel) || l.Name == FrameName) view.Composite(l.Canvas, Vector2Int.zero);
+            foreach (var l in layers)
+                if (l.Name == DotOnName) view.Composite(l.Canvas, new Vector2Int(channel * DotStep, 0));
+            return view;
         }
 
         // ── 광선 ─────────────────────────────────────────────
         static Vector3 Dir(float sx, float sy) => new Vector3(sx / F, (sy - VPy) / F, 1f);
 
         static Vector2 Project(Vector3 p) => new Vector2(F * p.x / p.z, VPy + F * (p.y - Eye) / p.z);
+
+        /// <summary>정면 화면의 한 픽셀(월드 픽셀 좌표)에 처음 보이는 물체 이름(없으면 null). 구워진 그림에서 물체 하나를 떼어낼 때 쓴다.</summary>
+        public static string HitName(int x, int y)
+        {
+            if (boxes.Count == 0) BuildScene();
+            int bi = Trace(new Vector3(0f, Eye, 0f), Dir(x + 0.5f, y + 0.5f), 1000f, false, out _, out _);
+            return bi >= 0 ? boxes[bi].Name : null;
+        }
 
         /// <summary>가장 먼저 닿는 상자. 없으면 -1.</summary>
         static int Trace(Vector3 o, Vector3 d, float tMax, bool shadowOnly, out float tHit, out int face)
@@ -289,11 +417,16 @@ namespace Night0333.EditorTools
             }
             float ao = 1f - 0.7f * occ / AoDir.Length;
             float amb = n.y > 0.5f ? AmbUp : n.y < -0.5f ? AmbDown : AmbSide;
-            Vector3 sum = AmbientCol * (amb * ao);
+            bool outdoors = p.z > BackZ + 0.29f;
+            if (outdoors) amb *= MenuDawn ? 1f : 0.35f; // 매장 밖은 밤이라 주변광이 약하다(엔딩의 새벽은 하늘빛이 고루 퍼진다)
+            Vector3 darkAmb = DarkAmbientCol * DarkAmbK;
+            Vector3 sum = (outdoors && MenuDawn ? DawnAmbient
+                          : mode == LightMode.All ? AmbientCol : mode == LightMode.Front ? Vector3.Lerp(darkAmb, AmbientCol, 0.4f) : darkAmb) * (amb * ao);
 
             for (int i = 0; i < lights.Count; i++)
             {
                 LightS l = lights[i];
+                if (l.OutdoorOnly && !outdoors) continue;
                 Vector3 to = l.P - o;
                 float d2 = to.sqrMagnitude;
                 if (d2 < 1e-4f) continue;
@@ -325,8 +458,9 @@ namespace Night0333.EditorTools
             {
                 Surf r = MakeSurf(bi, face, o, rd, t, s.Px, s.Py, false);
                 boxes[bi].Shade(ref r);
-                if (r.Target == 0) rc = r.Albedo * 0.62f + r.Emit;
-                else if (r.Alpha >= 1f) rc = Vector3.Lerp(NightCol, r.Albedo * 0.62f, 0.35f); // 문틀·안전띠는 흐릿하게만
+                float lk = ByMode(1f, 0.45f, 0.07f);   // 불이 꺼지면 비친 상도 어둡고, 빛나는 것만 또렷이 비친다
+                if (r.Target == 0) rc = r.Albedo * 0.62f * lk + r.Emit;
+                else if (r.Alpha >= 1f) rc = Vector3.Lerp(NightCol, r.Albedo * 0.62f * lk, 0.35f); // 문틀·안전띠는 흐릿하게만
             }
             return c * (1f - k * 0.6f) + rc * k;
         }

@@ -84,8 +84,82 @@ namespace Night0333.EditorTools
 
         static Shader Flat(Vector3 col) => (ref Surf s) => { s.Albedo = col; };
 
-        static void AddLight(float x, float y, float z, Vector3 col, bool down) =>
-            lights.Add(new LightS { P = new Vector3(x, y, z), Col = col, Down = down });
+        static void AddLight(float x, float y, float z, Vector3 col, bool down, bool outdoorOnly = false) =>
+            lights.Add(new LightS { P = new Vector3(x, y, z), Col = col, Down = down, OutdoorOnly = outdoorOnly });
+
+        // 계산대 위 수첩의 바닥 크기(X, Z)
+        static readonly Vector2 NoteMin = new Vector2(0.06f, 1.07f), NoteMax = new Vector2(0.32f, 1.24f);
+
+        /// <summary>계산대 위 수첩이 화면(월드 픽셀)에서 차지하는 영역. 수첩 핫스팟에 쓴다.</summary>
+        public static Rect NotebookScreenArea() => FlatScreenArea(NoteMin, NoteMax);
+
+        // 점검표 클립보드의 바닥 크기(X, Z): 바코드 스캐너와 금전등록기 사이, 알바생 쪽 빈자리
+        static readonly Vector2 ListMin = new Vector2(-0.51f, 1.05f), ListMax = new Vector2(-0.29f, 1.27f);
+
+        /// <summary>계산대 위 점검표(클립보드)가 화면에서 차지하는 영역. 점검표 핫스팟에 쓴다.</summary>
+        public static Rect ChecklistScreenArea() => FlatScreenArea(ListMin, ListMax);
+
+        // 전화기(계산대 오른쪽): 바닥 X·Z 범위와 높이. 표시등·액정은 윗면의 상자 기준 좌표(PhoneShade와 같은 값)
+        static readonly Vector2 PhoneMin = new Vector2(0.44f, 1.06f), PhoneMax = new Vector2(0.62f, 1.30f);
+        const float PhoneH = 0.05f;
+
+        /// <summary>전화기가 화면에서 차지하는 영역(윗면 높이까지). "전화 받기" 핫스팟에 쓴다.</summary>
+        public static Rect PhoneScreenArea()
+        {
+            Rect a = PhoneTopArea(0f, PhoneMax.x - PhoneMin.x, 0f, PhoneMax.y - PhoneMin.y);
+            Rect b = FlatScreenArea(PhoneMin, PhoneMax);
+            return Rect.MinMaxRect(Mathf.Min(a.xMin, b.xMin), Mathf.Min(a.yMin, b.yMin), Mathf.Max(a.xMax, b.xMax), Mathf.Max(a.yMax, b.yMax));
+        }
+
+        /// <summary>전화기 윗면의 빨간 부재중 표시등 자리(전화가 울리면 깜빡인다).</summary>
+        public static Rect PhoneLedArea() => PhoneTopArea(0.068f, 0.08f, 0.19f, 0.205f);
+        /// <summary>전화기 윗면의 액정 자리(전화가 울리면 밝아진다).</summary>
+        public static Rect PhoneLcdArea() => PhoneTopArea(0.085f, 0.165f, 0.18f, 0.215f);
+
+        static Rect PhoneTopArea(float lx0, float lx1, float lz0, float lz1)
+        {
+            float y = CY + PhoneH;
+            Vector2 a = Project(new Vector3(PhoneMin.x + lx0, y, PhoneMin.y + lz0)), b = Project(new Vector3(PhoneMin.x + lx1, y, PhoneMin.y + lz0));
+            Vector2 c = Project(new Vector3(PhoneMin.x + lx0, y, PhoneMin.y + lz1)), d = Project(new Vector3(PhoneMin.x + lx1, y, PhoneMin.y + lz1));
+            return Rect.MinMaxRect(Mathf.Min(a.x, c.x), Mathf.Min(a.y, b.y), Mathf.Max(b.x, d.x), Mathf.Max(c.y, d.y));
+        }
+
+        /// <summary>계산대 상판 위에 납작하게 놓인 물건(바닥 XZ 범위)이 화면에서 차지하는 영역.</summary>
+        static Rect FlatScreenArea(Vector2 min, Vector2 max)
+        {
+            Vector2 a = Project(new Vector3(min.x, CY, min.y)), b = Project(new Vector3(max.x, CY, min.y));
+            Vector2 c = Project(new Vector3(min.x, CY, max.y)), d = Project(new Vector3(max.x, CY, max.y));
+            float x0 = Mathf.Min(a.x, c.x), x1 = Mathf.Max(b.x, d.x);
+            float y0 = Mathf.Min(a.y, b.y), y1 = Mathf.Max(c.y, d.y);
+            return Rect.MinMaxRect(x0, y0, x1, y1);
+        }
+
+        // ── 계산대 소품 자리(미터). 계산 기능(물건 스캔·영수증·돈바구니)이 같은 값을 쓴다 ──
+        public const float CounterTopY = CY, EyeHeight = Eye, Focal = F, VanishY = VPy;
+        public const float RegX0 = -1.12f, RegX1 = -0.64f, RegZ0 = 1.30f, RegZ1 = 1.80f;
+        public const float BayX0 = -0.44f, BayX1 = 0.24f, BayZ0 = 1.36f, BayZ1 = 1.80f;
+        public const float ScanX0 = -0.22f, ScanX1 = 0.02f, ScanZ0 = 1.16f, ScanZ1 = 1.30f;
+        public const float TrayX0 = 0.34f, TrayX1 = 0.62f, TrayZ0 = 1.52f, TrayZ1 = 1.78f;
+
+        /// <summary>매장 속 한 점(미터)이 화면(월드 픽셀)의 어디에 그려지는지.</summary>
+        public static Vector2 ToScreen(Vector3 p) => Project(p);
+
+        /// <summary>정면 유리벽의 창문(왼쪽/오른쪽)이 화면에서 차지하는 영역.</summary>
+        public static Rect WindowScreenArea(bool right)
+        {
+            Rect w = right ? WinR : WinL;
+            Vector2 a = Project(new Vector3(w.xMin, w.yMin, BackZ)), b = Project(new Vector3(w.xMax, w.yMax, BackZ));
+            return Rect.MinMaxRect(a.x, a.y, b.x, b.y);
+        }
+
+        /// <summary>금전등록기 맨 위 주황 표시창(LED)이 화면에서 차지하는 영역.</summary>
+        public static Rect RegisterLedArea()
+        {
+            float z = RegZ0 + 0.34f;
+            Vector2 a = Project(new Vector3(RegX0 + 0.14f, CY + 0.365f, z));
+            Vector2 b = Project(new Vector3(RegX0 + 0.34f, CY + 0.455f, z));
+            return Rect.MinMaxRect(a.x, a.y, b.x, b.y);
+        }
 
         static void BuildScene()
         {
@@ -121,25 +195,44 @@ namespace Night0333.EditorTools
                     Box b = Add("tube" + k, xr.x, CeilH - 0.05f, z - 0.11f, xr.y, CeilH, z + 0.11f, TubeShade, outline: 0.35f, shadow: false);
                     b.Tube = k;
                     Vector3 col = (k == 4 ? new Vector3(1f, 0.9f, 0.66f) * 0.7f : LightCol) * TubeI;
-                    AddLight(Mathf.Lerp(xr.x, xr.y, 0.25f), CeilH - 0.07f, z, col, true);
-                    AddLight(Mathf.Lerp(xr.x, xr.y, 0.75f), CeilH - 0.07f, z, col, true);
+                    if (TubeOn(k))
+                    {
+                        AddLight(Mathf.Lerp(xr.x, xr.y, 0.25f), CeilH - 0.07f, z, col, true);
+                        AddLight(Mathf.Lerp(xr.x, xr.y, 0.75f), CeilH - 0.07f, z, col, true);
+                    }
                     k++;
                 }
             // 계산대 위 조명(화면 밖)
-            AddLight(-0.9f, CeilH - 0.07f, 0.2f, LightCol * TubeI, true);
-            AddLight(0.9f, CeilH - 0.07f, 0.2f, LightCol * TubeI, true);
-            // 스스로 빛나는 물건들
-            AddLight(2.85f, 1.2f, 5.8f, new Vector3(0.7f, 0.9f, 1f) * 0.10f, false);    // 냉장고
-            AddLight(0f, 2.55f, 7.8f, new Vector3(0.2f, 1f, 0.45f) * 0.035f, false);    // 비상구 표시등
-            AddLight(2.95f, 1.2f, 7.3f, new Vector3(0.3f, 0.5f, 1f) * 0.03f, false);    // ATM 화면
+            if (!lightsOff)
+            {
+                AddLight(-0.9f, CeilH - 0.07f, 0.2f, LightCol * TubeI, true);
+                AddLight(0.9f, CeilH - 0.07f, 0.2f, LightCol * TubeI, true);
+            }
+            // 스스로 빛나는 물건들(불이 꺼지면 이것들이 주변을 비추는 거의 유일한 빛이라 더 세게)
+            float glow = ByMode(1f, 1.8f, 3.2f);
+            AddLight(2.85f, 1.2f, 5.8f, new Vector3(0.7f, 0.9f, 1f) * 0.10f * glow, false);    // 냉장고
+            AddLight(0f, 2.55f, 7.8f, new Vector3(0.2f, 1f, 0.45f) * 0.035f * glow * ByMode(1f, 1.6f, 1.6f), false);    // 비상구 표시등
+            AddLight(2.95f, 1.2f, 7.3f, new Vector3(0.3f, 0.5f, 1f) * 0.03f * glow, false);    // ATM 화면
+            if (mode != LightMode.All)
+            {
+                // 창과 문 유리로 새어 드는 가로등·밤빛(창 앞 바닥과 벽이 희미하게 밝다)
+                AddLight((WinL.xMin + WinL.xMax) * 0.5f, 1.9f, BackZ - 0.35f, new Vector3(0.62f, 0.66f, 0.85f) * 0.10f, false);
+                AddLight((WinR.xMin + WinR.xMax) * 0.5f, 1.9f, BackZ - 0.35f, new Vector3(0.62f, 0.66f, 0.85f) * 0.10f, false);
+                AddLight(0f, 1.7f, BackZ - 0.35f, new Vector3(0.75f, 0.66f, 0.55f) * 0.08f, false);
+                // 계산대의 주황 LED와 CCTV 모니터가 상판을 아주 조금 비춘다
+                AddLight((RegX0 + RegX1) * 0.5f, CY + 0.5f, RegZ0 + 0.3f, new Vector3(1f, 0.48f, 0.2f) * 0.012f, false);
+                AddLight(1.0f, CY + 0.32f, 1.5f, new Vector3(0.55f, 0.7f, 0.9f) * 0.02f, false);
+            }
 
             // ── 계산대(전경) ──
             // 왼쪽 끝: 금전등록기 / 가운데: 물품 칸 + 돈바구니 / 오른쪽 끝: CCTV
-            Add("counter", -30f, CY - 0.04f, -2f, 30f, CY, CZ, CounterShade, fg: true);
-            Add("counterBase", -30f, 0f, CZ - 0.1f, 30f, CY - 0.04f, CZ, Flat(CounterEdgeCol), fg: true);
+            // 고개를 끝까지 숙이면 상판의 안쪽 모서리와 그 아래 몸통이 보인다.
+            // 왼쪽 끝(금전등록기 너머)은 벽까지 이어지지 않고 끊겨서, 알바생이 드나드는 통로가 된다.
+            Add("counter", CounterLeftEnd, CY - 0.04f, CZNear, 30f, CY, CZ, CounterShade, fg: true);
+            Add("counterBase", CounterLeftEnd, 0f, CZNear + 0.03f, 30f, CY - 0.04f, CZ, Flat(CounterEdgeCol * 0.6f), fg: true);
 
             // 금전등록기: 서랍 → 키 판 → 몸통 → 표시창이 계단식으로 올라간다
-            const float rx0 = -1.12f, rx1 = -0.64f, rz0 = 1.30f, rz1 = 1.80f;
+            const float rx0 = RegX0, rx1 = RegX1, rz0 = RegZ0, rz1 = RegZ1;
             Add("regDrawer", rx0, CY, rz0, rx1, CY + 0.12f, rz1, RegDrawerShade, fg: true, outline: 1f);
             Add("regDeck", rx0 + 0.02f, CY + 0.12f, rz0 + 0.04f, rx1 - 0.02f, CY + 0.21f, rz1, RegDeckShade, fg: true, outline: 1f);
             Add("regUpper", rx0 + 0.02f, CY + 0.21f, rz0 + 0.28f, rx1 - 0.02f, CY + 0.34f, rz1, RegUpperShade, fg: true, outline: 1f);
@@ -147,17 +240,17 @@ namespace Night0333.EditorTools
             Add("receipt", rx0 + 0.045f, CY + 0.21f, rz0 + 0.265f, rx0 + 0.165f, CY + 0.275f, rz0 + 0.28f, ReceiptShade, fg: true, outline: 0.5f);
 
             // 물품 칸: 손님이 가져온 물건을 올려놓는 낮은 테두리의 고무 매트
-            const float bx0 = -0.44f, bx1 = 0.24f, bz0 = 1.36f, bz1 = 1.80f, rim = 0.02f, rimH = 0.035f;
+            const float bx0 = BayX0, bx1 = BayX1, bz0 = BayZ0, bz1 = BayZ1, rim = 0.02f, rimH = 0.035f;
             Add("bayBase", bx0, CY, bz0, bx1, CY + 0.008f, bz1, BayShade, fg: true);
             Add("bayRimL", bx0 - rim, CY, bz0 - rim, bx0, CY + rimH, bz1 + rim, Flat(BayRim), fg: true, outline: 0.9f);
             Add("bayRimR", bx1, CY, bz0 - rim, bx1 + rim, CY + rimH, bz1 + rim, Flat(BayRim), fg: true, outline: 0.9f);
             Add("bayRimN", bx0, CY, bz0 - rim, bx1, CY + rimH, bz0, Flat(BayRim), fg: true, outline: 0.9f);
             Add("bayRimF", bx0, CY, bz1, bx1, CY + rimH, bz1 + rim, Flat(BayRim), fg: true, outline: 0.9f);
             // 물품 칸 앞(알바생 쪽)의 바코드 스캐너
-            Add("scanner", -0.22f, CY, 1.14f, 0.02f, CY + 0.006f, 1.28f, ScannerShade, fg: true, outline: 0.5f);
+            Add("scanner", ScanX0, CY, ScanZ0, ScanX1, CY + 0.006f, ScanZ1, ScannerShade, fg: true, outline: 0.5f);
 
             // 돈바구니: 손님이 돈을 올려놓는 청록색 접시
-            const float tx0 = 0.34f, tx1 = 0.62f, tz0 = 1.52f, tz1 = 1.78f, tr = 0.015f, trH = 0.028f;
+            const float tx0 = TrayX0, tx1 = TrayX1, tz0 = TrayZ0, tz1 = TrayZ1, tr = 0.015f, trH = 0.028f;
             Add("trayBase", tx0, CY, tz0, tx1, CY + 0.008f, tz1, TrayShade, fg: true);
             Add("trayRimL", tx0 - tr, CY, tz0 - tr, tx0, CY + trH, tz1 + tr, Flat(TrayRim), fg: true, outline: 0.9f);
             Add("trayRimR", tx1, CY, tz0 - tr, tx1 + tr, CY + trH, tz1 + tr, Flat(TrayRim), fg: true, outline: 0.9f);
@@ -172,11 +265,21 @@ namespace Night0333.EditorTools
 
             // 카드 단말기, 수첩, 전화
             Add("cardReader", -0.58f, CY, 1.68f, -0.48f, CY + 0.05f, 1.80f, CardReaderShade, fg: true, outline: 1f);
-            Add("notebook", 0.06f, CY, 0.99f, 0.32f, CY + 0.014f, 1.16f, NotebookShade, fg: true, outline: 0.8f);
-            Add("pen", 0.35f, CY, 1.02f, 0.365f, CY + 0.012f, 1.15f, Flat(PenBlue), fg: true, outline: 0.8f);
-            Add("phone", 0.44f, CY, 0.98f, 0.62f, CY + 0.05f, 1.22f, PhoneShade, fg: true, outline: 1f);
-            Add("handset", 0.445f, CY + 0.05f, 0.96f, 0.505f, CY + 0.085f, 1.24f, Flat(PhoneCol * 1.25f), fg: true, outline: 1f);
+            Add("notebook", NoteMin.x, CY, NoteMin.y, NoteMax.x, CY + 0.014f, NoteMax.y, NotebookShade, fg: true, outline: 0.8f);
+            // 점검표: 갈색 클립보드에 표가 그려진 종이, 먼 쪽 끝에 금속 집게
+            Add("checklist", ListMin.x, CY, ListMin.y, ListMax.x, CY + 0.006f, ListMax.y, ChecklistShade, fg: true, outline: 0.8f);
+            float clipMid = (ListMin.x + ListMax.x) * 0.5f;
+            Add("checklistClip", clipMid - 0.045f, CY + 0.006f, ListMax.y - 0.04f, clipMid + 0.045f, CY + 0.019f, ListMax.y - 0.012f, ClipShade, fg: true, outline: 0.8f);
+            Add("pen", 0.35f, CY, 1.10f, 0.365f, CY + 0.012f, 1.23f, Flat(PenBlue), fg: true, outline: 0.8f);
+            Add("phone", PhoneMin.x, CY, PhoneMin.y, PhoneMax.x, CY + PhoneH, PhoneMax.y, PhoneShade, fg: true, outline: 1f);
+            Add("handset", 0.445f, CY + 0.05f, 1.04f, 0.505f, CY + 0.085f, 1.32f, Flat(PhoneCol * 1.25f), fg: true, outline: 1f);
+            BuildExterior();
+            Bake();
+        }
 
+        /// <summary>상자 목록을 광선 계산용 배열로 옮긴다. 상자를 더하거나 뺀 뒤에는 다시 불러야 한다.</summary>
+        static void Bake()
+        {
             bN = boxes.Count;
             bb = new float[bN * 6];
             bSh = new bool[bN];
@@ -234,14 +337,15 @@ namespace Night0333.EditorTools
             c = Vector3.Lerp(c, CeilGrid, g);
             s.Albedo = c;
 
-            // 형광등 주변은 천장도 환하다
+            // 켜진 형광등 주변은 천장도 환하다
             float best = 99f;
-            foreach (float tz in TubeZ)
-                foreach (Vector2 xr in TubeX)
-                {
-                    float dx = Mathf.Max(xr.x - x, 0f, x - xr.y), dz = Mathf.Abs(z - tz);
-                    best = Mathf.Min(best, dx * dx + dz * dz);
-                }
+            for (int tk = 0; tk < TubeZ.Length * TubeX.Length; tk++)
+            {
+                if (!TubeOn(tk)) continue;
+                float tz = TubeZ[tk / TubeX.Length]; Vector2 xr = TubeX[tk % TubeX.Length];
+                float dx = Mathf.Max(xr.x - x, 0f, x - xr.y), dz = Mathf.Abs(z - tz);
+                best = Mathf.Min(best, dx * dx + dz * dz);
+            }
             s.Emit = CeilCol * (0.16f * Mathf.Exp(-best / 0.4f));
         }
 
@@ -249,6 +353,7 @@ namespace Night0333.EditorTools
         {
             float y = s.P.y, z = s.P.z;
             bool left = s.P.x < 0f;
+            if (s.Face == 5) { FacadeSideShade(ref s); return; } // 매장 밖에서 본 끝면(CCTV용)
             Vector3 c = WallCol * Mathf.Lerp(0.9f, 1.02f, Fbm(z * 0.9f, y * 2.2f, left ? 71 : 72));
             if (y < 0.1f) c = BaseCol;
             // 진열대 위 홍보 띠(색이 바램)
@@ -260,9 +365,13 @@ namespace Night0333.EditorTools
             s.Albedo = c;
         }
 
+        /// <summary>메인 화면용: 자동문 두 짝이 이만큼(m) 벌어진 그림을 그릴 때만 0보다 크게(평소엔 닫힘).</summary>
+        public static float MenuDoorGap;
+
         static void BackWallShade(ref Surf s)
         {
-            if (s.Face != 4) { s.Albedo = WallCol; return; }
+            bool outside = s.Face == 5; // 매장 밖에서 본 면(CCTV용)
+            if (s.Face != 4 && !outside) { s.Albedo = WallCol; return; }
             float x = s.P.x, y = s.P.y, ax = Mathf.Abs(x);
 
             // 자동문: 고정 문틀은 벽에, 좌우 문짝은 따로(나중에 열 수 있게)
@@ -274,12 +383,16 @@ namespace Night0333.EditorTools
                     return;
                 }
                 s.Target = x < 0f ? TDoorL : TDoorR;
-                if (ax < 0.045f || ax > DoorHalf - 0.11f || y < 0.14f || y > DoorTop - 0.17f)
+                // 벌어진 문: 가운데 틈은 그냥 뚫려 있고, 문짝은 양옆으로 밀려 있다
+                float half = MenuDoorGap * 0.5f;
+                if (ax < half) { s.Alpha = 0f; return; }
+                float lx = ax - half;
+                if (lx < 0.045f || ax > DoorHalf - 0.11f || y < 0.14f || y > DoorTop - 0.17f)
                 {
-                    s.Albedo = ax < 0.012f ? Dark : FrameCol * 1.15f; // 문짝 틀
+                    s.Albedo = lx < 0.012f ? Dark : FrameCol * 1.15f; // 문짝 틀
                     return;
                 }
-                if (y > 1.02f && y < 1.1f) { s.Albedo = Mathf.Repeat(ax, 0.16f) < 0.08f ? SafetyYellow : Dark; return; } // 안전띠
+                if (y > 1.02f && y < 1.1f) { s.Albedo = Mathf.Repeat(lx, 0.16f) < 0.08f ? SafetyYellow : Dark; return; } // 안전띠
                 GlassShade(ref s);
                 return;
             }
@@ -300,19 +413,31 @@ namespace Night0333.EditorTools
                 if (p1 || p2 || p3)
                 {
                     float show = Fbm(x * 9f, y * 9f, 81);
-                    s.Albedo = Vector3.Lerp(Paper * 0.92f, p3 ? BannerRed : BannerBlue, show > 0.6f ? 0.22f : 0f);
+                    s.Albedo = outside
+                        ? Vector3.Lerp(Paper, p3 ? BannerRed : BannerBlue, show > 0.45f ? 0.8f : 0.15f)   // 밖에서는 앞면
+                        : Vector3.Lerp(Paper * 0.92f, p3 ? BannerRed : BannerBlue, show > 0.6f ? 0.22f : 0f);
                     return;
                 }
                 GlassShade(ref s);
                 return;
             }
 
-            Vector3 c = WallCol * Mathf.Lerp(0.9f, 1.02f, Fbm(x * 1.1f, y * 2.5f, 73));
-            // 창틀 밑으로 흘러내린 얼룩
-            if (y < 0.7f && ax > 1.05f && ax < 2.55f && VNoise(x * 14f, 0.5f, 74) > 0.6f)
-                c *= Mathf.Lerp(0.86f, 1f, y / 0.7f);
-            if (y > 0.63f && y < 0.7f && ax > 1.0f && ax < 2.6f) c = BaseCol * 1.2f; // 창턱
-            if (y < 0.1f) c = BaseCol;
+            Vector3 c;
+            if (outside)
+            {
+                // 바깥 벽: 어두운 외장 패널
+                c = FacadeCol * (Mathf.Repeat(x, 0.9f) < 0.03f || Mathf.Repeat(y, 0.9f) < 0.03f ? 0.75f : 1f);
+                if (y < 0.15f) c = FacadeCol * 0.6f;
+            }
+            else
+            {
+                c = WallCol * Mathf.Lerp(0.9f, 1.02f, Fbm(x * 1.1f, y * 2.5f, 73));
+                // 창틀 밑으로 흘러내린 얼룩
+                if (y < 0.7f && ax > 1.05f && ax < 2.55f && VNoise(x * 14f, 0.5f, 74) > 0.6f)
+                    c *= Mathf.Lerp(0.86f, 1f, y / 0.7f);
+                if (y > 0.63f && y < 0.7f && ax > 1.0f && ax < 2.6f) c = BaseCol * 1.2f; // 창턱
+                if (y < 0.1f) c = BaseCol;
+            }
 
             // 직원용 창고 문
             if (x > Staff.xMin && x < Staff.xMax && y < Staff.yMax)
@@ -350,10 +475,13 @@ namespace Night0333.EditorTools
                 if (t > BackZ)
                 {
                     float mz = 2f * BackZ - t, mx = d.x * t;
-                    bool hit = Mathf.Abs(mx) < 0.8f && Mathf.Abs(mz - 0.2f) < 0.14f;
-                    foreach (float tz in TubeZ)
-                        foreach (Vector2 xr in TubeX)
-                            if (mx > xr.x && mx < xr.y && Mathf.Abs(mz - tz) < 0.13f) hit = true;
+                    bool hit = !lightsOff && Mathf.Abs(mx) < 0.8f && Mathf.Abs(mz - 0.2f) < 0.14f;   // 계산대 위 조명
+                    for (int tk = 0; tk < TubeZ.Length * TubeX.Length; tk++)
+                    {
+                        if (!TubeOn(tk)) continue;
+                        float tz = TubeZ[tk / TubeX.Length]; Vector2 xr = TubeX[tk % TubeX.Length];
+                        if (mx > xr.x && mx < xr.y && Mathf.Abs(mz - tz) < 0.13f) hit = true;
+                    }
                     if (hit) { col = new Vector3(1f, 0.98f, 0.86f); a = 0.32f; }
                 }
             }
@@ -366,6 +494,15 @@ namespace Night0333.EditorTools
         static void ShelfShade(ref Surf s)
         {
             bool left = s.B.Min.x < 0f;
+            if (s.Face == 4)
+            {
+                // 계산대 쪽 끝판(고개를 끝까지 돌리면 보인다): 행사 포스터
+                Vector3 e = s.L;
+                s.Albedo = ShelfMetal;
+                if (e.x > 0.08f && e.x < s.S.x - 0.08f && e.y > 0.7f && e.y < 1.6f)
+                    s.Albedo = e.y > 1.32f ? (left ? HeaderTeal : HeaderRed) : Mathf.Repeat(e.y, 0.12f) < 0.04f ? PaperLine : Paper;
+                return;
+            }
             if (s.Face != (left ? 1 : 0)) { s.Albedo = ShelfMetal; return; }
             float y = s.P.y, z = s.L.z, top = s.B.Max.y;
             if (y < 0.1f) { s.Albedo = ShelfKick; return; }
@@ -529,10 +666,10 @@ namespace Night0333.EditorTools
             if (s.Face != 3) { s.Albedo = CounterEdgeCol; return; }
             float x = s.P.x, z = s.P.z;
             Vector3 c = CounterCol * Mathf.Lerp(0.93f, 1.03f, Fbm(x * 3f, z * 9f, 121)); // 무늬결
-            if (Hash(Fl(x * 260f), Fl(z * 260f), 122) < 0.05f) c *= 0.93f;               // 점박이
+            if (Hash(Fl(x * 200f), Fl(z * 200f), 122) < 0.05f) c *= 0.93f;               // 점박이
             float wear = 1f - new Vector2((x + 0.1f) / 0.6f, (z - 1.22f) / 0.3f).magnitude;
             if (wear > 0f) c = Vector3.Lerp(c, CounterWorn, wear * 0.5f);                // 손때로 닳은 자리
-            if (z > CZ - 0.035f) c = CounterEdgeCol;
+            if (z > CZ - 0.035f || z < CZNear + 0.02f) c = CounterEdgeCol;
             if (z > CZ - 0.012f) c = CounterEdgeCol * 1.4f;
             s.Albedo = c;
             s.Gloss = 0.07f;
@@ -602,9 +739,9 @@ namespace Night0333.EditorTools
             s.Albedo = RegBody * 0.9f;
             if (s.Face != 4 || l.x < 0.02f || l.x > sz.x - 0.02f || l.y < 0.025f || l.y > sz.y - 0.025f) return;
             // 주황 LED 표시창 "0.00"
-            const float cell = 0.0105f;
+            const float cell = 0.012f;
             s.Albedo = new Vector3(0.03f, 0.02f, 0.02f);
-            bool on = PixelFont.Hit("0.00", (l.x - 0.04f) / cell, (sz.y - 0.043f - l.y) / cell);
+            bool on = PixelFont.Hit("0.00", (l.x - 0.028f) / cell, (sz.y - 0.04f - l.y) / cell);
             s.Emit = on ? LedOrange : new Vector3(0.1f, 0.025f, 0.01f);
         }
 
@@ -640,7 +777,10 @@ namespace Night0333.EditorTools
             const float side = 0.012f, bottom = 0.026f;
             if (l.x > side && l.x < sz.x - side && l.y > bottom && l.y < sz.y - side)
             {
-                CctvScreen(ref s, (l.x - side) / (sz.x - 2f * side), (l.y - bottom) / (sz.y - side - bottom));
+                // 화면 자리: 여기에는 꺼진 화면만 그리고, 채널별 영상은 따로 레이어로 만든다
+                s.Albedo = new Vector3(0.03f, 0.035f, 0.04f);
+                s.IsScreen = true;
+                s.ScreenUV = new Vector2((l.x - side) / (sz.x - 2f * side), (l.y - bottom) / (sz.y - side - bottom));
                 return;
             }
             // 아래 테두리: 전원 표시등과 상표 자리
@@ -648,47 +788,6 @@ namespace Night0333.EditorTools
             {
                 if (l.x > sz.x - 0.03f && l.x < sz.x - 0.018f) { s.Albedo = Dark; s.Emit = new Vector3(0.45f, 0.75f, 1f); return; }
                 if (Mathf.Abs(l.x - sz.x * 0.5f) < 0.03f && l.y > 0.011f && l.y < 0.018f) s.Albedo = MonDark * 2.2f;
-            }
-        }
-
-        // 계산대 뒤 천장에 달린 CCTV 카메라: 알바생 머리 위에서 출입문 쪽을 내려다본다
-        static readonly Vector3 CamPos = new Vector3(0f, 2.55f, -0.6f);
-        static readonly Vector3 CamFwd = (new Vector3(0f, 0.9f, 4.5f) - CamPos).normalized;
-        static bool inFeed;
-
-        /// <summary>
-        /// CCTV 화면 한 장. 위의 카메라 위치에서 실제 매장을 다시 그려서 흑백 영상으로 보여준다.
-        /// u: 왼→오, v: 아래→위 (0~1).
-        /// </summary>
-        static void CctvScreen(ref Surf s, float u, float v)
-        {
-            s.Albedo = new Vector3(0.02f, 0.03f, 0.03f);
-            Vector3 up = Vector3.Cross(CamFwd, Vector3.right);
-            Vector3 dir = (CamFwd + Vector3.right * ((u - 0.5f) * 1.5f) + up * ((v - 0.5f) * 0.92f)).normalized;
-
-            float g = 0.03f;
-            inFeed = true;
-            int bi = Trace(CamPos, dir, 60f, false, out float t, out int face);
-            if (bi >= 0)
-            {
-                Surf r = MakeSurf(bi, face, CamPos, dir, t, s.Px, s.Py, false);
-                boxes[bi].Shade(ref r);
-                Vector3 c = r.Target != 0 && r.Alpha < 1f ? NightCol : Vector3.Scale(r.Albedo, Light(r.P, r.N)) + r.Emit;
-                g = c.x * 0.3f + c.y * 0.59f + c.z * 0.11f;
-            }
-            inFeed = false;
-
-            g = Mathf.Pow(Mathf.Clamp01(g), 1.15f) * 0.9f + (Hash(s.Px, s.Py, 141) - 0.5f) * 0.035f;
-            g *= 1f - 0.3f * Mathf.Pow(Mathf.Max(Mathf.Abs(u - 0.5f), Mathf.Abs(v - 0.5f)) * 2f, 4f); // 가장자리 어두움
-            s.Emit = new Vector3(0.74f, 0.82f, 0.86f) * Mathf.Max(0f, g);                              // 흑백 영상
-
-            // 화면 위에 겹쳐 찍히는 글자들: 녹화 표시와 채널 이름(왼쪽 위), 시각(오른쪽 위)
-            if (v > 0.9f && v < 0.95f)
-            {
-                var text = new Vector3(0.9f, 0.94f, 0.94f);
-                if (u > 0.03f && u < 0.055f) s.Emit = new Vector3(0.9f, 0.15f, 0.1f);
-                else if (u > 0.075f && u < 0.2f && Mathf.Repeat(u, 0.03f) < 0.02f) s.Emit = text;
-                else if (u > 0.72f && u < 0.97f && Mathf.Repeat(u, 0.028f) < 0.019f) s.Emit = text;
             }
         }
 
@@ -752,6 +851,46 @@ namespace Night0333.EditorTools
             s.Albedo = c;
         }
 
+        static readonly Vector3 ClipBoardCol = H("#7A5A40");
+
+        /// <summary>점검표 클립보드: 갈색 판 위에 표(가로줄·세로줄)가 그려진 종이, 위쪽 몇 줄엔 펜 기록.</summary>
+        static void ChecklistShade(ref Surf s)
+        {
+            Vector3 l = s.L, sz = s.S;
+            if (s.Face != 3) { s.Albedo = ClipBoardCol * 0.7f; return; }
+            Vector3 c = ClipBoardCol;
+            float px0 = 0.014f, px1 = sz.x - 0.014f, pz0 = 0.012f, pz1 = sz.z - 0.03f;
+            if (l.x > px0 && l.x < px1 && l.z > pz0 && l.z < pz1)
+            {
+                c = Paper;
+                float lx = l.x - px0, fromTop = pz1 - l.z;               // 종이 왼쪽에서, 종이 위(먼 쪽)에서 잰 거리
+                float lineW = Mathf.Max(0.003f, s.Foot.z * 0.7f), colW = Mathf.Max(0.0025f, s.Foot.x * 0.6f);
+                if (fromTop < 0.03f)
+                {
+                    // 제목 줄
+                    if (fromTop > 0.01f && fromTop < 0.02f && lx > 0.018f && lx < 0.12f && Hash(Fl(lx * 80f), 1, 171) < 0.8f) c = new Vector3(0.2f, 0.21f, 0.26f);
+                }
+                else
+                {
+                    float t = fromTop - 0.03f;
+                    int row = Fl(t / 0.02f);
+                    float fr = t - row * 0.02f;
+                    if (fr < lineW) c = PaperLine;                                                       // 가로줄
+                    else if (Mathf.Abs(lx - 0.05f) < colW || Mathf.Abs(lx - 0.11f) < colW) c = PaperLine; // 세로줄
+                    else if (row < 3 && fr > 0.006f && fr < 0.015f && lx > 0.12f && lx < 0.12f + 0.05f * Hash(row, 2, 172)
+                             && Hash(Fl(lx * 90f), row, 173) < 0.75f) c = PenBlue;                       // 지난 손님 판정(펜 글씨)
+                    else if (row < 4 && fr > 0.006f && fr < 0.015f && lx > 0.012f && lx < 0.04f) c = PaperLine * 0.8f; // 번호
+                }
+            }
+            s.Albedo = c;
+        }
+
+        static void ClipShade(ref Surf s)
+        {
+            Vector3 l = s.L;
+            s.Albedo = s.Face == 3 ? (l.z > s.S.z * 0.55f ? Metal * 1.15f : Metal) : Metal * 0.6f;
+        }
+
         static void PhoneShade(ref Surf s)
         {
             Vector3 l = s.L;
@@ -781,25 +920,39 @@ namespace Night0333.EditorTools
 
         static void PostDetails(Buf b)
         {
-            // 오른쪽 구석의 볼록 감시 거울
+            // 오른쪽 구석의 볼록 감시 거울(불이 꺼지면 거울도 어둡다)
+            float k = PxScale, lk = ByMode(1f, 0.4f, 0.1f);
             Vector2 m = Project(new Vector3(3.3f, 2.45f, 7.9f));
-            Disc(b, m.x, m.y, 11.5f, H("#232A30"));
-            Disc(b, m.x, m.y, 10f, H("#939C91"));
-            Disc(b, m.x - 1f, m.y + 1f, 8f, H("#B0B6A5"));
-            Disc(b, m.x - 2f, m.y - 3f, 3.2f, H("#5D6A68"));   // 거울에 비친 매장(어두운 덩어리)
-            Disc(b, m.x + 3f, m.y - 2f, 2f, H("#465254"));
-            Disc(b, m.x - 4f, m.y + 4f, 2.2f, H("#F3F1DF"));   // 반짝임
+            Disc(b, m.x, m.y, 11.5f * k, H("#232A30") * lk);
+            Disc(b, m.x, m.y, 10f * k, H("#939C91") * lk);
+            Disc(b, m.x - k, m.y + k, 8f * k, H("#B0B6A5") * lk);
+            Disc(b, m.x - 2f * k, m.y - 3f * k, 3.2f * k, H("#5D6A68") * lk);   // 거울에 비친 매장(어두운 덩어리)
+            Disc(b, m.x + 3f * k, m.y - 2f * k, 2f * k, H("#465254") * lk);
+            Disc(b, m.x - 4f * k, m.y + 4f * k, 2.2f * k, H("#F3F1DF") * ByMode(1f, 0.5f, 0.2f));   // 반짝임
 
             // 문 위 천장의 돔형 CCTV(빨간 불)
             Vector2 d = Project(new Vector3(0f, CeilH, 7.4f));
-            Disc(b, d.x, d.y - 2f, 4.5f, H("#161B21"));
-            Disc(b, d.x - 1f, d.y - 3f, 1.2f, H("#465254"));
-            Disc(b, d.x + 1.5f, d.y - 3.5f, 0.8f, new Vector3(0.9f, 0.22f, 0.18f));
+            Disc(b, d.x, d.y - 2f * k, 4.5f * k, H("#161B21") * ByMode(1f, 0.8f, 0.5f));
+            Disc(b, Fl(d.x - k) + 0.5f, Fl(d.y - 3f * k) + 0.5f, 0.71f, H("#465254") * lk);
+            Disc(b, Fl(d.x + 1.5f * k) + 0.5f, Fl(d.y - 3.5f * k) + 0.5f, 0.71f, new Vector3(0.9f, 0.22f, 0.18f));
         }
 
         // ── 창밖(밤) ─────────────────────────────────────────
-        static readonly RectInt OutsideRect = new RectInt(-208, -88, 416, 170);
-        static readonly Vector3[] Lamps = { new Vector3(-6.7f, 4.2f, 30f), new Vector3(1.6f, 4.2f, 48f), new Vector3(11f, 4.2f, 40f) };
+        static readonly RectInt OutsideRect = MakeOutsideRect();
+
+        /// <summary>정면 유리벽이 화면에서 차지하는 영역(창밖 그림은 이만큼만 그리면 된다).</summary>
+        static RectInt MakeOutsideRect()
+        {
+            int x0 = Mathf.FloorToInt(-F * HalfW / BackZ) - 4, x1 = -x0;
+            int y0 = Mathf.FloorToInt(VPy - F * Eye / BackZ) - 5;
+            int y1 = Mathf.CeilToInt(VPy + F * (CeilH - Eye) / BackZ) + 4;
+            return new RectInt(x0, y0, x1 - x0, y1 - y0);
+        }
+        // 가로등 (x, 높이, z). 마지막 것은 매장 가까이 있고 3번 CCTV(시안 A)가 달리는 기둥이다.
+        static readonly Vector3[] Lamps =
+        {
+            new Vector3(-6.7f, 4.2f, 30f), new Vector3(1.6f, 4.2f, 48f), new Vector3(11f, 4.2f, 40f), new Vector3(4.6f, 4.2f, 15.8f),
+        };
         static readonly Vector3 LampCol = new Vector3(1f, 0.74f, 0.38f);
 
         static Layer PaintOutside()
@@ -816,7 +969,7 @@ namespace Night0333.EditorTools
                 {
                     float sx = x + 0.5f, sy = y + 0.5f;
                     Vector3 c;
-                    if (sy >= VPy) c = Vector3.Lerp(skyLow, skyTop, Mathf.Clamp01((sy - VPy) / 60f));
+                    if (sy >= VPy) c = Vector3.Lerp(skyLow, skyTop, Mathf.Clamp01((sy - VPy) / (60f * PxScale)));
                     else
                     {
                         float gz = F * Eye / (VPy - sy), gx = sx * gz / F;
@@ -856,15 +1009,16 @@ namespace Night0333.EditorTools
             var sil = new Vector3(0.022f, 0.027f, 0.045f);
             for (int x = r.xMin; x < r.xMax; x++)
             {
-                int block = Fl((x + 1000) / 13f);
+                int block = Fl((x + 1000) / (13f * PxScale));
                 bool tree = Hash(block, 4, 221) < 0.4f;
-                int h = tree ? 3 + Fl(Mathf.Sin(x * 0.5f) * 1.5f + Hash(x, 5, 221) * 3f) : 3 + Fl(Hash(block, 3, 221) * 17f);
+                int h = 1 + Fl(PxScale * (tree ? 3f + Mathf.Sin(x * 0.5f) * 1.5f + Hash(x, 5, 221) * 3f : 3f + Hash(block, 3, 221) * 17f));
                 for (int y = horizon; y < horizon + h; y++) Px(x, y, sil);
-                if (!tree && h > 6 && Hash(x, block, 222) < 0.07f) Px(x, horizon + 2 + Fl(Hash(x, 9, 222) * (h - 4)), new Vector3(0.36f, 0.29f, 0.13f)); // 먼 창문 불빛
+                if (!tree && h > 5 && Hash(x, block, 222) < 0.07f) Px(x, horizon + 2 + Fl(Hash(x, 9, 222) * (h - 4)), new Vector3(0.36f, 0.29f, 0.13f)); // 먼 창문 불빛
             }
             // 먼 철탑의 붉은 경고등
-            for (int y = horizon; y < horizon + 27; y++) Px(-27, y, sil);
-            Px(-27, horizon + 27, new Vector3(0.85f, 0.14f, 0.1f));
+            int mastX = Fl(-27f * PxScale), mastH = Fl(27f * PxScale);
+            for (int y = horizon; y < horizon + mastH; y++) Px(mastX, y, sil);
+            Px(mastX, horizon + mastH, new Vector3(0.85f, 0.14f, 0.1f));
 
             // 주차된 차 한 대
             Vector2 c0 = Project(new Vector3(4.3f, 0f, 20f)), c1 = Project(new Vector3(6.3f, 1.45f, 20f));
@@ -885,7 +1039,7 @@ namespace Night0333.EditorTools
                 Vector2 top = Project(lamp), bottom = Project(new Vector3(lamp.x, 0f, lamp.z));
                 int lx = Fl(top.x), ty = Fl(top.y);
                 for (int y = Fl(bottom.y); y <= ty; y++) Px(lx, y, new Vector3(0.06f, 0.065f, 0.085f));
-                float k = 30f / lamp.z;
+                float k = 30f / lamp.z * PxScale;
                 for (int dy = -14; dy <= 14; dy++)
                     for (int dx = -14; dx <= 14; dx++)
                     {

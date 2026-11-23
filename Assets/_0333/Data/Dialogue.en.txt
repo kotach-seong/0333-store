@@ -1,0 +1,464 @@
+# 03:33 customer lines (speech bubbles) — English
+#
+# Same layout as Dialogue.txt: the keys before ":" (인사, 선택, CCTV, 늦음1, 늦음2, 정상→정상 …) stay in Korean.
+# "/" inside a line is a line break. Lines starting with # are notes.
+
+[hoodie] Hoodie Guy
+인사: Just this, please.
+  선택: Do you need a bag? > Nah, I'll just carry it.
+  선택: (Scan the barcode without a word) > ...Yeah.
+인사: ...I don't need a bag.
+  선택: Sure, got it. > ...Thanks.
+  선택: Bags are 50 won, you sure? > Ugh, I said I'm fine.
+인사: Could you hurry up a little?
+  선택: Sure, right away. > ...Okay.
+  선택: In a rush or something? > ...Don't ask stuff like that.
+CCTV: Excuse me... I'm right here.
+CCTV: You only look at the screen, huh.
+늦음1: Is it done yet?
+늦음2: Ugh... forget it, I'm leaving.
+정상→정상: Have a good one.
+정상→정상: ...Bye.
+정상→비정상: What's with that look? Creepy.
+정상→비정상: Seriously... I'm never coming back.
+비정상→정상: Thanks. ...Guess I don't have to hide anymore.
+비정상→정상: I don't need a bag. I've got somewhere to put it all.
+비정상→정상: Thanks. Next time... let's go together.
+비정상→비정상: ...How did you know?
+
+[faceless_fedora] Fedora Man
+인사: Lovely night, isn't it?
+  선택: Yes, a lovely night. > Tonight... especially so.
+  선택: It's raining. What's lovely? > Rain washes so much away.
+인사: Quietly, as always, if you would.
+  선택: I don't think we've met. > You just don't remember.
+  선택: Of course, quietly. > Thank you. You're always so kind.
+CCTV: There's nothing there.
+CCTV: Looking for me on that screen?
+늦음1: No need to hurry. / ...Not yet.
+늦음2: What a waste of time.
+정상→정상: Have a good night.
+정상→정상: Until next time.
+정상→비정상: How rude. / I'll remember this.
+비정상→정상: Thank you. Truly.
+비정상→정상: You didn't look at my face. Wise of you.
+비정상→정상: I've been looking for someone like you for a long time.
+비정상→비정상: Splendid. / But this isn't the end.
+
+[gym] Gym Bro
+인사: Bro, this has a decent amount of protein, right?
+  선택: Yeah, it's pretty high. > See! You know your stuff, bro!
+  선택: No idea. > Come on, it's all on the label!
+인사: Leg day, man. I'm starving!
+  선택: Good work out there. > Wanna train with me, bro? Haha!
+  선택: You work out at this hour? > Dawn workouts are the best!
+CCTV: Bro! Ring me up! I'm losing my gains!
+CCTV: Look at me, not the screen!
+늦음1: Man, my pump's gonna fade.
+늦음2: I'm losing muscle standing here!
+정상→정상: Take it easy, bro!
+정상→정상: Let's work out sometime!
+정상→비정상: Bro, are you looking down on me? / Wow, unbelievable!
+비정상→정상: Thanks, bro. My body's been itching to move.
+비정상→정상: Gonna be a great workout today. Heh.
+비정상→정상: I was... low on protein. Thanks.
+비정상→비정상: Tch. You're sharp, bro.
+
+[yakuza] Yakuza
+인사: ...Ring it up.
+  선택: Right away. > ...Good.
+  선택: Do you have a points card? > ...(Stares at you)
+인사: I don't need the receipt.
+  선택: I'll toss it for you. > Good. You understand.
+  선택: I'm supposed to hand it over... > ...Supposed to. Interesting.
+CCTV: Hey. Where are you looking?
+CCTV: Want me to turn that screen off?
+늦음1: Don't stall.
+늦음2: Are you testing my patience?
+정상→정상: ...Keep it up.
+정상→정상: Decent place.
+정상→비정상: You dare look at me like that? / We'll see.
+비정상→정상: ...Thank you. I owe you one.
+비정상→정상: I like this store. I'll be back.
+비정상→정상: Keep your mouth shut and you'll live long. Got it?
+비정상→비정상: ...Forget it, if you want to live.
+
+[office] Office Worker
+인사: I need the receipt. It's a company card.
+  선택: I'll make sure you get it. > Thanks, it really matters.
+  선택: A company card at this hour? > ...Overtime. Don't ask.
+인사: Quick, please. Last train.
+  선택: I'll hurry. > Thank you!
+  선택: The last train left already. > ...What? Oh no...
+CCTV: Excuse me, I'm in a hurry.
+CCTV: Can't you look at that later?
+늦음1: I'm going to miss the train...
+늦음2: I'm filing a complaint with head office.
+정상→정상: Thanks, have a good night!
+정상→정상: Thanks for the receipt!
+정상→비정상: What kind of service is this? / I'm calling head office!
+비정상→정상: Thaaank you. Overtime runs long.
+비정상→정상: They told me to smile. See? I'm smiling.
+비정상→정상: I'll come at this hour tomorrow too. Every day.
+비정상→비정상: ...This company never lets you clock out.
+
+[bald_office] Bald Office Worker
+인사: Haah... just this.
+  선택: Rough day, huh? > Heh... is it that obvious?
+  선택: Okay. > ...Okay.
+인사: Overtime again today, heh.
+  선택: You've worked hard. > Haven't heard that in a while.
+  선택: I'm on overtime too. > Heh, we're both suffering.
+CCTV: Um... excuse me...
+CCTV: Nobody ever looks at me.
+늦음1: I just want to go home...
+늦음2: I'm invisible everywhere I go.
+정상→정상: Heh, take care.
+정상→정상: Hang in there, young man.
+정상→비정상: Hah, people like me / don't even count as people, huh!
+비정상→정상: Thank you... heh heh heh.
+비정상→정상: My head was aching. Feels much cooler now.
+비정상→정상: There's an opening at my company. Heh.
+비정상→비정상: Overtime... never ends.
+
+[drunk] Drunk
+인사: Th-this... hic. Ring it up!
+  선택: Sure, I'll ring it up. > Good kid! Our clerk's a good kid!
+  선택: Had a few, huh? > I'm not drunk! Hic.
+인사: Hey, clerk! You're the best!
+  선택: Thanks. Get home safe. > Yeah! You too... hic.
+  선택: You smell like booze. > Booze? That's cologne, cologne!
+CCTV: Hey! I'm right here! Can't you see me?!
+CCTV: Is the TV fun? Hic.
+늦음1: Why so slow... the world's spinning.
+늦음2: Get me the owner! Hic!
+정상→정상: See ya~ hic!
+정상→정상: Best clerk ever! I'll be back! Hic.
+정상→비정상: What? What'd I do! Hic. / Never coming here again!
+비정상→정상: Thank youuu~ hic.
+비정상→정상: One drink... with me? Hic.
+비정상→정상: My insides are so... full. Hic.
+비정상→비정상: I'm sober now. ...Because of you.
+
+[occult] Occult Woman
+인사: ...The energy is good at this hour.
+  선택: What energy? > The energy of a door opening.
+  선택: I wouldn't know. > Better not to know. For now.
+인사: Would you like a charm?
+  선택: Sure, thanks. > Keep it in your wallet. / Before half past three.
+  선택: No, thanks. > ...You'll regret that.
+CCTV: Stare at the screen long enough... / and something stares back.
+CCTV: Is someone in there?
+늦음1: Time is getting tangled.
+늦음2: If you take too long... something bad comes.
+정상→정상: Keep that charm on you.
+정상→정상: Don't look at the door at 3:33.
+정상→비정상: You dare doubt me? / You'll be cursed.
+비정상→정상: Thank you. For opening the door.
+비정상→정상: The cards were right. It's you.
+비정상→정상: You can't wait for 3:33 now, can you?
+비정상→비정상: So you can see it. What lies beyond.
+
+[cult] Cult Lady
+인사: Oh my, young man, your face looks so gloomy~
+  선택: I'm just a bit tired lately. > That's why you should join our group~
+  선택: Just ringing you up. > Oh dear, your heart is closed~
+인사: Want to come to one of our meetings?
+  선택: I'll think about it. > Hoho, I'll be waiting~ Promise~
+  선택: No, thank you. > Everyone says that at first~
+CCTV: Look at the truth, not the screen~
+CCTV: Stare like that and your soul will slip out~
+늦음1: Waiting is a kind of practice, hoho.
+늦음2: The energy in here is blocked, so blocked!
+정상→정상: Hoho, see you at the next meeting~
+정상→정상: Be blessed~
+정상→비정상: Oh my, oh my, who do you take me for! / You'll be punished!
+비정상→정상: Thank you~ hohoho. Be blessed.
+비정상→정상: Now you're one of us.
+비정상→정상: Can you see the words carving into my body?
+비정상→비정상: Rejecting the truth... / you'll regret it.
+
+[child] Little Girl
+인사: This... Mommy told me to buy it.
+  선택: Where's your mommy? > ...At home. She's at home.
+  선택: All alone? It's late. > It's okay. I'm not scared.
+인사: Can I buy this?
+  선택: Of course you can. > Thank you!
+  선택: Do you have money? > Mommy gave me some. Here.
+CCTV: Um... can you see me?
+CCTV: Why won't you look at me?
+늦음1: Mommy said to come back fast...
+늦음2: I want to go home...
+정상→정상: Bye-bye!
+정상→정상: Thank you!
+정상→비정상: Why are you looking at me so scary...? / I'm telling Mommy!
+비정상→정상: Thank you! Hehe.
+비정상→정상: Mommy says... come with us.
+비정상→정상: Let's play hide-and-seek. This time you hide.
+비정상→비정상: ...You found me. Hehe.
+
+[foggy] Foggy Glasses Guy
+인사: Ah, my glasses fogged up... this is right, isn't it?
+  선택: Yes, that's right. > Phew, I can't see a thing.
+  선택: Want a tissue? > Oh, thank you! Lifesaver.
+인사: It's pouring out there.
+  선택: Grab an umbrella. > Ah... should I?
+  선택: Yeah, be careful out there. > You too.
+CCTV: Hello? Are you there? / I can't really see...
+CCTV: Aren't you... going to ring me up?
+늦음1: Let me wipe my glasses...
+늦음2: I really can't see anything.
+정상→정상: Thanks! Have a good one.
+정상→정상: Umbrella... nah, I'll just run!
+정상→비정상: Just because I can't see / you're ignoring me?
+비정상→정상: Thank you. I can see clearly now.
+비정상→정상: Now that the fog's gone... I can see it all. You too.
+비정상→정상: Want me to wipe your glasses? You won't need eyes.
+비정상→비정상: ...Did you see my face?
+
+[couple] Couple
+인사: Babe, should we get this too? Oh, and this!
+  선택: There's no couple discount. > Really? Babe, let's just get it~
+  선택: You two look great together. > Eek, did you hear? We look great!
+인사: It's our 100th day today~
+  선택: Congratulations! > Thank you~ Babe, did you hear?
+  선택: Okay... I'll ring you up. > ...Babe, this clerk is kinda cold.
+CCTV: Babe, he's not even paying attention / just staring at the CCTV.
+CCTV: Hello~ we're right here, you know?
+늦음1: Babe, we're gonna be late for the movie.
+늦음2: Ugh, seriously, let's go somewhere else.
+정상→정상: Thanks~ Babe, let's go!
+정상→정상: Have a good one~ We'll come again!
+정상→비정상: Babe, this clerk is so weird. / Let's go, this sucks!
+비정상→정상: Thank you~ Babe, smile.
+비정상→정상: They say we'll be together forever now.
+비정상→정상: Want to take a picture, the three of us?
+비정상→비정상: Babe... he recognized us.
+
+[leopard] Leopard-Print Lady
+인사: Give me the most expensive thing here.
+  선택: Everything costs about the same here. > Oh my, are you talking back?
+  선택: I'll pick something out. > Yes, that's the attitude~
+인사: I don't usually come to places like this~
+  선택: Thank you for coming. > Hoho, what a smooth talker.
+  선택: Then why are you here? > My driver went home, that's why!
+CCTV: Oh my, what are you looking at with me standing here?
+CCTV: Don't you know the customer is king?
+늦음1: Do you know what my time is worth?
+늦음2: Give me your boss's number. Now.
+정상→정상: Hoho, the service is lacking, but I'll let it slide.
+정상→정상: Keep it up~
+정상→비정상: Oh my, did you just disrespect me? / You're getting fired!
+비정상→정상: Hoho, thank you~
+비정상→정상: This coat? It's all real. Every single one.
+비정상→정상: You have such pretty eyes, dear. I want them.
+비정상→비정상: Sharp eyes, huh? What a shame~
+
+[danso] Flute Grandpa
+인사: Heh heh, the night is deep.
+  선택: You're out late too. > Old folks don't sleep much.
+  선택: Get home safe. > Heh heh, thank you.
+인사: Shall I play you a tune?
+  선택: Yes, please. > (Toots the bamboo flute) Heh heh!
+  선택: I'm on shift... > Heh heh, what a pity.
+CCTV: Young man, eyes are for looking at people.
+CCTV: That square box has stolen your soul.
+늦음1: Heh heh... nice and relaxed.
+늦음2: Want a whack from this flute?
+정상→정상: Heh heh, take care.
+정상→정상: Next time I'll play you a tune.
+정상→비정상: Bah, you rascal! / No manners at all!
+비정상→정상: Heh heh, thank you.
+비정상→정상: Long ago, on this very spot... the same thing happened.
+비정상→정상: Shall I play you a tune? The last one you'll ever hear.
+비정상→비정상: Sharp eyes... too sharp.
+
+[jinsang_m] Pushy Man
+인사: Exchange this. I bought it yesterday.
+  선택: That's a pigeon. > I said I bought it here yesterday!
+  선택: Do you have the receipt? > Receipt, my foot!
+인사: Isn't this buy-one-get-one? Give me one free.
+  선택: It's not on sale. > It says so right there!
+  선택: I'll check. > Yeah, check it quick.
+CCTV: Hey! What are you doing with a customer standing here!
+CCTV: The service here is a mess!
+늦음1: Know how long I've been standing here?
+늦음2: I'm calling head office! What's your name!
+정상→정상: Make it buy-one-get-one next time!
+정상→정상: Improve your service!
+정상→비정상: What! Are you kicking me out?! / I'm calling head office!
+비정상→정상: Thank you. Coo.
+비정상→정상: The pigeon says it's hungry. Coo coo.
+비정상→정상: Next time I'm taking you with me. Coo.
+비정상→비정상: ...Coo. Coo coo coo.
+
+[jinsang_w] Pushy Lady
+인사: Get me the owner.
+  선택: I'm the only one here. > Then you call the owner!
+  선택: What's the problem? > What problem? I'm upset, that's what!
+인사: Isn't this past its expiration date?
+  선택: It has three days left. > Three days? That's as good as expired!
+  선택: Want me to swap it? > Forget it, just ring it up.
+CCTV: Are you ignoring me right now?
+CCTV: Oh my, are you talking about me while watching the CCTV?
+늦음1: Why are you so slow?
+늦음2: Get me the owner! The owner!
+정상→정상: Hmph, be nicer next time.
+정상→정상: Put in a good word to your boss.
+정상→비정상: Oh, unbelievable! / I won't let this go!
+비정상→정상: Thaaank you~
+비정상→정상: No need to call the owner. I ate him.
+비정상→정상: My kids are hungry, you see. Hoho.
+비정상→비정상: ...You'll end up like the owner soon.
+
+[gentle_elder] Gentle Grandpa
+인사: Working so hard at this late hour.
+  선택: Thank you, sir. > Heh heh, what a kind young man.
+  선택: What brings you out so late? > Couldn't sleep, so I went for a walk.
+인사: Take your time, take your time.
+  선택: Thank you. > Yes, yes.
+  선택: I'll be quick. > Heh heh, still, don't rush.
+CCTV: Heh heh, something interesting on there?
+CCTV: If you're busy, I can wait.
+늦음1: It's fine, it's fine.
+늦음2: Heh heh... still, could you hurry a little?
+정상→정상: Heh heh, take care. Look after yourself.
+정상→정상: Thank you, young man.
+정상→비정상: Ignoring me because I'm old? / Heh, how hurtful!
+비정상→정상: Thank you... thank you so much.
+비정상→정상: This body is no good anymore.
+비정상→정상: Your body looks so sturdy, young man.
+비정상→비정상: Heh heh... I thought you were just a nice boy.
+
+[otaku] Otaku
+인사: H-has the new collab merch / not come in yet?
+  선택: It comes in tomorrow. > T-tomorrow! I have to be first in line...!
+  선택: No idea what that is. > Th-that can't be... the notice said...
+인사: Hu, huhi... this, please.
+  선택: Sure, I'll ring it up. > Th-thank you...
+  선택: Nice pin on your bag. > Oh, you noticed?! / It's limited edition...!
+CCTV: A-are you ignoring me...
+CCTV: Is th-there anime on that screen?
+늦음1: I-if I'm late, the limited edition...
+늦음2: I'm giving this place one star...!
+정상→정상: Th-thank you! I'll come again!
+정상→정상: When the merch comes in, please...!
+정상→비정상: L-looking at me like a bug...! / I'm writing a review!
+비정상→정상: Th-thank you... huhihi.
+비정상→정상: She says she likes you. Huhi.
+비정상→정상: Better than collab bread... I found something better.
+비정상→비정상: Tch... missed the limited edition.
+
+[coins] Coin Customer
+인사: I'll pay in 10-won coins. Count them.
+  선택: Okay... I'll count them. > Hehe, take your time.
+  선택: You don't have any bills? > Coins are money too, money.
+인사: Lots of coins is fine, right?
+  선택: Yes, it's fine. > Knew it! Best clerk ever.
+  선택: That's a bit of a problem. > You have to take them, you know?
+CCTV: Hey, you're counting my coins, right?
+CCTV: Don't miscount because you're staring at the screen.
+늦음1: Take your time counting, hehe.
+늦음2: If you miss even one, count them again.
+정상→정상: Hehe, all there? Have a good one.
+정상→정상: Keep the change. Hehe.
+정상→비정상: Disrespecting me because I pay in coins? / This is all money!
+비정상→정상: Thank you. Hehehehe.
+비정상→정상: Keep the change. I'll take yours instead.
+비정상→정상: Gotta pack plenty of coins for the ferryman. Hehe.
+비정상→비정상: ...Caught me while I was counting.
+
+[soldier] Soldier
+인사: ...Ring this up quietly, please.
+  선택: Understood. > ...Thank you.
+  선택: On leave? > ...Yes. On leave.
+인사: Do... many people come here?
+  선택: Hardly anyone at this hour. > ...Good.
+  선택: Why do you ask? > ...It's nothing.
+CCTV: How far does that camera see?
+CCTV: Turn that screen off. Now.
+늦음1: Hurry... please hurry.
+늦음2: There's no time!
+정상→정상: ...Thank you. You never saw me.
+정상→정상: Carry on.
+정상→비정상: Are you... going to report me?!
+비정상→정상: ...Thank you.
+비정상→정상: Mission complete. Returning to base.
+비정상→정상: Nobody came looking for me. You'll come, won't you?
+비정상→비정상: I have to... get back to my unit...
+
+[police] Police Officer
+인사: Night shift must be tough. Just a coffee.
+  선택: You must be busy too, officer. > Haha, we're both working hard.
+  선택: Did something happen? > No, just on patrol.
+인사: Quiet around here lately, right?
+  선택: Yes, it's quiet. > Good to hear.
+  선택: Actually, there was a weird customer... > Really? If anything happens / call us right away.
+CCTV: Catch anything suspicious on the CCTV?
+CCTV: Keep a close eye on that screen. Strange times.
+늦음1: I need to go before the radio calls.
+늦음2: A call just came in. Quickly, please.
+정상→정상: Take care. / Call us if anything happens.
+정상→정상: Thanks for the coffee.
+정상→비정상: You suspect a police officer? / That's obstruction of duty!
+비정상→정상: Thank you for your cooperation.
+비정상→정상: Looks like I'll have to add... one more name to the missing list.
+비정상→정상: Keep quiet. I'm listening to everything.
+비정상→비정상: ...You're perceptive. Dangerously so.
+
+[mayor] The Mayor's Party
+인사: Heh heh, the citizens' convenience store! / Keep up the good work.
+  선택: Are you the mayor? > Heh heh, thanks for recognizing me!
+  선택: Who are you? > You don't know the mayor?
+인사: Mind if I take a photo? For promotion.
+  선택: Go ahead. > Okay, smile! Say cheese~
+  선택: I'm on shift, sorry. > Heh heh, a stickler for the rules.
+CCTV: Say, don't you recognize me?
+CCTV: What are you doing in front of the mayor?
+늦음1: My schedule is very tight.
+늦음2: See you at the next election.
+정상→정상: Heh heh, I'm counting on your vote next election!
+정상→정상: Citizens, fighting!
+정상→비정상: Say, do you know who I am! / This store's license is revoked!
+비정상→정상: Thank you, dear citizens.
+비정상→정상: Thank you for your precious vote... I mean, your precious self.
+비정상→정상: Honey, shall we take that one too?
+비정상→비정상: Campaign promises... are never kept.
+
+[student] High School Student
+인사: I-I'm a college student. For real.
+  선택: Show me your ID. > Uh, w-well... I left it at home...
+  선택: Did I ask? > N-no, nothing! Just saying!
+인사: It's an errand for my dad... really.
+  선택: Minors can't buy alcohol. > Oh... okay...
+  선택: Tell your dad to come himself. > ...Dad can't come right now.
+CCTV: Um... you don't check IDs, do you?
+CCTV: I-is that being recorded?
+늦음1: Hurry up... before Mom wakes up...
+늦음2: Never mind, I won't buy it!
+정상→정상: Oh, thank you... bye.
+정상→정상: Thank you so much!
+정상→비정상: What! / I really didn't do anything, okay?!
+비정상→정상: Thank you... hehe.
+비정상→정상: Things look clearer upside down.
+비정상→정상: I'll come again after class. Forever.
+비정상→비정상: ...I never graduated. Ever.
+
+[cosplay] Cosplay Guy
+인사: Just got back from a show~
+  선택: What kind of show? > An idol cover dance! Wanna see?
+  선택: Good work tonight. > Hehe, thank you~
+인사: How's this costume? I made it myself!
+  선택: You did a great job. > Eek! It took three weeks!
+  선택: You look cold. > Cute beats cold!
+CCTV: Hey~ look at me~ over here!
+CCTV: I'm prettier than that screen, right?
+늦음1: My makeup's going to run...
+늦음2: Fan service is over!
+정상→정상: Fan service~ bye-bye!
+정상→정상: Come see a show~
+정상→비정상: You think I'm weird because of my costume? / That's so mean!
+비정상→정상: Thank you~ fan service!
+비정상→정상: My hair keeps moving. Cute, right?
+비정상→정상: Now I'll show you my real face~
+비정상→비정상: Tch, they saw through my makeup.

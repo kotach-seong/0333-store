@@ -1,0 +1,713 @@
+# 화면 글자표(코드에 적힌 한국어 → English / 简体中文). Loc.T가 읽는다.
+# 묶음 하나: "ko: 원문"(코드에 적힌 그대로) / "en: …" / "zh: …". 빈 줄로 나눈다. \n은 줄바꿈, {0}은 숫자 자리.
+# 대사(손님·점장·3:33·오프닝·엔딩·수첩·크레딧)는 여기가 아니라 Data/이름.en.txt, 이름.zh.txt에 있다.
+
+# ── 메인 화면·일시정지 ──
+ko: 새로 시작
+en: New Game
+zh: 新游戏
+
+ko: 이어하기
+en: Continue
+zh: 继续游戏
+
+ko: 설정
+en: Settings
+zh: 设置
+
+ko: 크레딧
+en: Credits
+zh: 制作人员
+
+ko: 종료
+en: Quit
+zh: 退出
+
+ko: 계속하기
+en: Resume
+zh: 继续
+
+ko: 메인 화면
+en: Main Menu
+zh: 主菜单
+
+ko: 예
+en: Yes
+zh: 是
+
+ko: 아니오
+en: No
+zh: 否
+
+ko: 메인 화면으로 갈까요?\n오늘 밤 진행은 저장되지 않아요.
+en: Return to the main menu?\nTonight's progress won't be saved.
+zh: 要返回主菜单吗？\n今晚的进度不会保存。
+
+ko: 게임을 끌까요?\n오늘 밤 진행은 저장되지 않아요.
+en: Quit the game?\nTonight's progress won't be saved.
+zh: 要退出游戏吗？\n今晚的进度不会保存。
+
+ko: CAM 03  주차장
+en: CAM 03  PARKING LOT
+zh: CAM 03  停车场
+
+ko: Space · Enter: 메인으로
+en: Space · Enter: Main Menu
+zh: Space · Enter：返回主菜单
+
+ko: 플레이 해주셔서 감사합니다
+en: Thank you for playing
+zh: 感谢游玩
+
+# ── 설정 ──
+ko: 소리 크기
+en: Volume
+zh: 音量
+
+ko: 마우스 감도
+en: Mouse Sensitivity
+zh: 鼠标灵敏度
+
+ko: 화면 모드
+en: Display Mode
+zh: 显示模式
+
+ko: 창 크기
+en: Window Size
+zh: 窗口大小
+
+ko: 밝기
+en: Brightness
+zh: 亮度
+
+ko: 깜빡임 줄이기
+en: Reduce Flashing
+zh: 减少闪烁
+
+ko: 혈흔 없애기
+en: Hide Blood
+zh: 隐藏血迹
+
+ko: 화면 흔들림
+en: Screen Shake
+zh: 画面震动
+
+ko: 언어 · Language
+en: Language
+zh: 语言 · Language
+
+ko: 뒤로
+en: Back
+zh: 返回
+
+ko: 전체 화면
+en: Fullscreen
+zh: 全屏
+
+ko: 창
+en: Windowed
+zh: 窗口
+
+ko: 켬
+en: On
+zh: 开
+
+ko: 끔
+en: Off
+zh: 关
+
+ko: 창 크기는 창 모드일 때 적용돼요
+en: Window size applies in windowed mode
+zh: 窗口大小仅在窗口模式下生效
+
+ko: ◀ ▶ 를 눌러 바꾸기
+en: Press ◀ ▶ to change
+zh: 按 ◀ ▶ 更改
+
+# ── 점검표 ──
+ko: 야간 거래 점검표
+en: Night Transaction Checklist
+zh: 夜间交易检查表
+
+ko: 시각
+en: Time
+zh: 时间
+
+ko: 판정
+en: Verdict
+zh: 判定
+
+ko: 정상
+en: Normal
+zh: 正常
+
+ko: 비정상
+en: Abnormal
+zh: 异常
+
+ko: 판정 기다리는 중
+en: Awaiting verdict
+zh: 等待判定
+
+ko: 계산 중
+en: Ringing up
+zh: 结账中
+
+ko: 이 거래는 정상입니까?
+en: Is this transaction normal?
+zh: 这笔交易正常吗？
+
+ko: 거래 종료하기
+en: End Transaction
+zh: 结束交易
+
+# ── 조준할 때 이름 ──
+ko: 영수증 보기
+en: View Receipt
+zh: 查看小票
+
+ko: 점검표 보기
+en: View Checklist
+zh: 查看检查表
+
+ko: 전화 받기
+en: Answer Phone
+zh: 接电话
+
+ko: 수첩 보기
+en: View Notebook
+zh: 查看笔记本
+
+ko: CCTV 보기
+en: View CCTV
+zh: 查看监控
+
+ko: 아래로 끌어 스캔
+en: Drag down to scan
+zh: 向下拖动扫描
+
+ko: 대답하기
+en: Answer
+zh: 回答
+
+# ── 영수증 ──
+ko: 24시 편의점
+en: 24H CONVENIENCE
+zh: 24小时便利店
+
+ko: 3호점
+en: Store #3
+zh: 3号店
+
+ko: 상품명
+en: Item
+zh: 商品
+
+ko: 단가
+en: Price
+zh: 单价
+
+ko: 수량
+en: Qty
+zh: 数量
+
+ko: 금액
+en: Amount
+zh: 金额
+
+ko: 합계
+en: TOTAL
+zh: 合计
+
+ko: 받은 돈
+en: Paid
+zh: 实收
+
+ko: 저희 편의점을 이용해 주셔서
+en: Thank you for shopping
+zh: 感谢您光临
+
+ko: 감사합니다
+en: with us
+zh: 本店
+
+# 물건
+ko: 생수
+en: Water
+zh: 矿泉水
+
+ko: 김밥
+en: Gimbap
+zh: 紫菜包饭
+
+ko: 라면
+en: Ramen
+zh: 拉面
+
+ko: 과자
+en: Snacks
+zh: 零食
+
+ko: 빵
+en: Bread
+zh: 面包
+
+ko: 음료수
+en: Soda
+zh: 饮料
+
+ko: 술
+en: Soju
+zh: 烧酒
+
+ko: 푸딩
+en: Pudding
+zh: 布丁
+
+# 없는 상품(영수증 이상현상)
+ko: 손가락
+en: Finger
+zh: 手指
+
+ko: 눈알
+en: Eyeball
+zh: 眼珠
+
+ko: 피
+en: Blood
+zh: 血
+
+ko: 머리카락
+en: Hair
+zh: 头发
+
+ko: 이빨
+en: Tooth
+zh: 牙齿
+
+ko: 귀
+en: Ear
+zh: 耳朵
+
+ko: 쓰레기
+en: Trash
+zh: 垃圾
+
+ko: 피생수
+en: Blood Water
+zh: 血水
+
+ko: 손가락 김밥
+en: Finger Roll
+zh: 手指饭卷
+
+ko: 눈알 푸딩
+en: Eye Pudding
+zh: 眼珠布丁
+
+ko: 썩은 빵
+en: Moldy Bread
+zh: 烂面包
+
+ko: 핏물 라면
+en: Blood Ramen
+zh: 血水拉面
+
+ko: 검은 소주
+en: Black Soju
+zh: 黑烧酒
+
+ko: 젖은 머리카락
+en: Wet Hair
+zh: 湿头发
+
+# ── 사람(대사창 이름·영수증 손님 줄) ──
+ko: 점장
+en: Manager
+zh: 店长
+
+ko: 나
+en: Me
+zh: 我
+
+ko: 아침 알바생
+en: Morning Clerk
+zh: 早班店员
+
+ko: 모르는 번호
+en: Unknown Number
+zh: 未知号码
+
+ko: 경찰
+en: Police Officer
+zh: 警察
+
+ko: 손님
+en: Customer
+zh: 顾客
+
+ko: 방문자
+en: Visitor
+zh: 访客
+
+ko: 후드 청년
+en: Hoodie Guy
+zh: 连帽衫青年
+
+ko: 중절모 정장남
+en: Fedora Man
+zh: 礼帽西装男
+
+ko: 운동광
+en: Gym Bro
+zh: 健身狂
+
+ko: 야쿠자
+en: Yakuza
+zh: 黑道
+
+ko: 정장남
+en: Office Worker
+zh: 西装男
+
+ko: 대머리 정장남
+en: Bald Office Worker
+zh: 秃头西装男
+
+ko: 취객
+en: Drunk
+zh: 醉汉
+
+ko: 오컬트 여자
+en: Occult Woman
+zh: 神秘学女人
+
+ko: 사이비 아줌마
+en: Cult Lady
+zh: 邪教阿姨
+
+ko: 여자아이
+en: Little Girl
+zh: 小女孩
+
+ko: 안경 뿌연 남자
+en: Foggy Glasses Guy
+zh: 眼镜起雾男
+
+ko: 커플
+en: Couple
+zh: 情侣
+
+ko: 호피 아줌마
+en: Leopard-Print Lady
+zh: 豹纹阿姨
+
+ko: 단소 할아버지
+en: Flute Grandpa
+zh: 吹箫老爷爷
+
+ko: 민폐 아저씨
+en: Pushy Man
+zh: 难缠大叔
+
+ko: 민폐 아줌마
+en: Pushy Lady
+zh: 难缠大妈
+
+ko: 점잖은 할아버지
+en: Gentle Grandpa
+zh: 斯文老爷爷
+
+ko: 오타쿠
+en: Otaku
+zh: 宅男
+
+ko: 동전 손님
+en: Coin Customer
+zh: 硬币顾客
+
+ko: 군인
+en: Soldier
+zh: 军人
+
+ko: 시장님 일행
+en: The Mayor's Party
+zh: 市长一行
+
+ko: 코스프레 남자
+en: Cosplay Guy
+zh: Cosplay男
+
+ko: 고등학생
+en: High School Student
+zh: 高中生
+
+ko: 얼굴 없는 남자
+en: Faceless Man
+zh: 无脸男
+
+# ── 코드에 적힌 대사(경찰·아침 알바생) ──
+ko: 오늘 밤 이 근처에서 사람이 사라졌습니다.
+en: Someone went missing around here tonight.
+zh: 今晚这附近有人失踪了。
+
+ko: 혹시 이상한 걸 보시면 바로 연락 주세요.
+en: If you see anything strange, call us right away.
+zh: 如果看到什么奇怪的事，请马上联系我们。
+
+ko: 이 근처에서 실종된 사람들... 전부 이 편의점에 들렀더군요.
+en: The people who went missing around here... all stopped by this store.
+zh: 这附近失踪的人……全都来过这家便利店。
+
+ko: 당신이랑 엮여 있어요. ...당신을 지켜보겠습니다.
+en: They're all tied to you. ...We'll be watching you.
+zh: 都和你有关。……我们会盯着你的。
+
+ko: 당신 때문이야.
+en: It's because of you.
+zh: 都是因为你。
+
+ko: 수고하셨습니다. 무슨 특별한 일 없었죠?
+en: Good work. Nothing unusual happened, right?
+zh: 辛苦了。没发生什么特别的事吧？
+
+ko: …버텼네.
+en: ...You made it.
+zh: ……你撑过来了。
+
+# ── 교대·결과·죽음 ──
+ko: DAY {0}  근무 기록
+en: DAY {0}  SHIFT LOG
+zh: DAY {0}  值班记录
+
+ko: 맞힌 판정 {0} / {1}
+en: Correct verdicts {0} / {1}
+zh: 正确判定 {0} / {1}
+
+ko: 흔적 {0} · 실종 {1}
+en: Traces {0} · Missing {1}
+zh: 痕迹 {0} · 失踪 {1}
+
+ko: 정상인
+en: Normal
+zh: 正常人
+
+ko: 클릭하면 계속
+en: Click to continue
+zh: 点击继续
+
+ko: 죽었습니다
+en: YOU DIED
+zh: 你死了
+
+ko: 체포되었습니다
+en: YOU WERE ARRESTED
+zh: 你被逮捕了
+
+ko: 메인 화면으로
+en: Main Menu
+zh: 返回主菜单
+
+ko: 근무 끝
+en: Shift Over
+zh: 值班结束
+
+ko: (엔딩은 아직 없어요)
+en: (No ending yet)
+zh: （还没有结局）
+
+# 결과 화면의 이유
+ko: CCTV에 손님이 안 찍힘
+en: Customer not on CCTV
+zh: 监控里没拍到顾客
+
+ko: CCTV에 손님 뒤 귀신이 찍힘
+en: Ghost behind customer on CCTV
+zh: 监控拍到顾客身后有鬼
+
+ko: CCTV에 괴물로 찍힘
+en: Shown as a monster on CCTV
+zh: 监控里拍到的是怪物
+
+ko: CCTV에 밖에서 보는 귀신들
+en: Ghosts watching from outside on CCTV
+zh: 监控拍到外面有鬼在看
+
+ko: 영수증 손님 설명이 다름
+en: Receipt describes someone else
+zh: 小票上的顾客描述不符
+
+ko: 영수증 합계가 계산기와 다름
+en: Receipt total doesn't match register
+zh: 小票合计与收银机不符
+
+ko: 돈 대신 신체 부위를 줌
+en: Paid with body parts, not money
+zh: 用身体部位代替钱
+
+ko: 영수증 시각이 다름
+en: Wrong time on receipt
+zh: 小票时间不对
+
+ko: 영수증 번호가 이상함
+en: Odd receipt number
+zh: 小票编号异常
+
+ko: 영수증에 없는 상품
+en: Nonexistent items on receipt
+zh: 小票上有不存在的商品
+
+ko: 없는 상품: {0}
+en: Fake items: {0}
+zh: 不存在的商品：{0}
+
+ko: 영수증에 피가 묻음
+en: Blood on the receipt
+zh: 小票上沾了血
+
+ko: 이상한 물건: {0}
+en: Strange items: {0}
+zh: 奇怪的物品：{0}
+
+# ── 오프닝·엔딩 화면 ──
+ko: Space 길게: 건너뛰기
+en: Hold Space: Skip
+zh: 长按 Space：跳过
+
+ko: 연결 중…
+en: Connecting…
+zh: 连接中…
+
+ko: 수신 전화
+en: Incoming Call
+zh: 来电
+
+ko: 통화 중 {0:00}:{1:00}
+en: In call {0:00}:{1:00}
+zh: 通话中 {0:00}:{1:00}
+
+ko: 통화 종료
+en: Call Ended
+zh: 通话结束
+
+ko: 끝
+en: THE END
+zh: 完
+
+ko: CAM 02  매장
+en: CAM 02  STORE
+zh: CAM 02  店内
+
+ko: 구인구직
+en: Job Board
+zh: 招聘
+
+ko: 급구
+en: URGENT
+zh: 急招
+
+ko: 전화하기
+en: Call
+zh: 拨打
+
+ko: 거절
+en: Decline
+zh: 拒绝
+
+ko: 받기
+en: Answer
+zh: 接听
+
+ko: 심야 편의점 야간 알바
+en: Night Shift Clerk
+zh: 深夜便利店夜班店员
+
+# ── 수첩(그날 바뀌는 줄을 찾는 열쇠: 번역 수첩 파일의 글자와 같아야 한다) ──
+ko: 수칙
+en: Rules
+zh: 守则
+
+ko: (계속)
+en: (cont.)
+zh: （续）
+
+ko: (완료)
+en: (done)
+zh: （已完成）
+
+ko: 점장 전화
+en: manager's call
+zh: 店长的电话
+
+ko: 손님 계산
+en: Customers served
+zh: 结账顾客
+
+# ── 3:33(코드에 적힌 것·미리보기) ──
+ko: 계산이요.
+en: Ring me up.
+zh: 结账。
+
+ko: 뭐 안 사고 가셨어요?
+en: Leaving without buying anything?
+zh: 没买东西就走了吗？
+
+ko: 아까 오셨던 분 맞죠?
+en: You were here earlier, right?
+zh: 您是刚才来过的那位吧？
+
+ko: 왜 웃으세요?
+en: Why are you smiling?
+zh: 您为什么笑？
+
+ko: 저기요... 문 좀 열어 주세요..
+en: Excuse me... please open the door..
+zh: 那个……请开一下门..
+
+ko: 3시가 되면... 늦어요.
+en: When it hits 3... it'll be too late.
+zh: 到了三点……就晚了。
+
+ko: 왜... 왜 안 해 줘요?
+en: Why... why won't you do it?
+zh: 为什么……为什么不给我结？
+
+ko: ...거기 누구 있어요?
+en: ...Is someone there?
+zh: ……那里有人吗？
+
+ko: ...정상으로 마감하지 마.
+en: ...Don't close it as Normal.
+zh: ……不要按正常结束。
+
+ko: 끝내
+en: end it
+zh: 结束吧
+
+ko: 왜 안 해
+en: why won't you
+zh: 为什么不按
+
+ko: 눌러
+en: press it
+zh: 按下去
+
+ko: 빨리
+en: hurry
+zh: 快点
+
+ko: 정상이야
+en: it's normal
+zh: 是正常的
+
+ko: 마감해
+en: close it
+zh: 结束它
+
+ko: 너도 여기 남아
+en: you stay here too
+zh: 你也留在这里
+
+ko: 눌러 눌러
+en: press press
+zh: 按啊按啊

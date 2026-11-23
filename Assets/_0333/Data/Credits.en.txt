@@ -1,0 +1,34 @@
+# Credits (main menu → Credits) — English. Same markers as Credits.txt:
+# "@" big title / "##" small heading / "%" small note / "!" closing line (stops at the center) / blank line: gap
+
+@03:33
+
+## Created by
+kotach
+
+## Art
+kotach
+
+## Sound Effects
+kotach
+
+## Phone Voice Source
+beetlemuse (Freesound)
+
+## Fonts
+Galmuri
+© 2019–2025 Lee Minseo (quiple)
+SIL Open Font License 1.1
+
+Fusion Pixel Font
+© 2022 TakWolf
+SIL Open Font License 1.1
+
+## Made with
+Unity
+
+%All stories and characters in this game are fictional.
+
+
+
+!Thank you for playing

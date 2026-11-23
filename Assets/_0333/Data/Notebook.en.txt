@@ -1,0 +1,10 @@
+# Night Shift Rules
+1. Only ring up a customer once they're at the counter.
+2. Do not approve if the receipt and CCTV show a different number of people.
+3. Do not approve transactions from the future or the past.
+4. Never close the 3:33 a.m. transaction as Normal.
+===
+# DAY 1 To-Do
+- Take the manager's call
+- Customers served 0/10
+- Hand over to the next clerk at 6:00

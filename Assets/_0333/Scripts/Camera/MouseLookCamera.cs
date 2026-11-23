@@ -18,9 +18,9 @@ namespace Night0333
     public class MouseLookCamera : MonoBehaviour
     {
         [Tooltip("카메라가 볼 수 있는 매장 전체 영역(월드 픽셀)")]
-        public Rect worldBounds = new Rect(-432f, -330f, 864f, 573f);
+        public Rect worldBounds = new Rect(-570f, -380f, 1140f, 640f);
         [Tooltip("게임을 시작했을 때 보는 곳(정면)")]
-        public Vector2 home = new Vector2(0f, -40f);
+        public Vector2 home = new Vector2(0f, -34f);
 
         [Header("감도")]
         [Tooltip("1이면 마우스를 움직인 거리만큼 화면이 움직인다. 클수록 빠르다")]
@@ -40,9 +40,21 @@ namespace Night0333
             set { lookLocked = value; SetCursorLocked(!value); }
         }
 
+        /// <summary>
+        /// 물건을 끄는 동안 true. 커서는 잠긴 채로 시선만 멈추고, 마우스 움직임은 물건이 가져간다.
+        /// </summary>
+        [System.NonSerialized] public bool FreezeLook;
+
         Camera cam;
         Vector2 current, target, velocity;
+        /// <summary>
+        /// 이번 프레임에 커서 잠금 상태가 바뀌었는지. 패널을 닫은 클릭이 같은 프레임에
+        /// "핫스팟 클릭"으로 한 번 더 읽히는 것을 막을 때 쓴다.
+        /// </summary>
+        public bool CursorChangedThisFrame => Time.frameCount == cursorChangedFrame;
+
         bool lookLocked, skipDelta;
+        int cursorChangedFrame = -1;
 
         void Awake()
         {
@@ -63,11 +75,12 @@ namespace Night0333
             HandleCursorKeys();
 
             Rect lim = Limits();
-            if (!lookLocked && Cursor.lockState == CursorLockMode.Locked)
+            if (!lookLocked && !FreezeLook && Cursor.lockState == CursorLockMode.Locked)
             {
                 Vector2 delta = ReadDelta();
                 if (skipDelta) { delta = Vector2.zero; skipDelta = false; } // 커서를 잠근 직후의 튀는 값은 버린다
                 if (invertY) delta.y = -delta.y;
+                delta = HandFx.Look(delta);   // 3:33: 손이 떨리거나 무겁다
                 target += delta * (UnitsPerScreenPixel() * sensitivity);
             }
             target = Clamp(target, lim);
@@ -80,6 +93,7 @@ namespace Night0333
             float unit = UnitsPerScreenPixel();
             Vector2 p = Clamp(current, lim);
             p = new Vector2(Mathf.Round(p.x / unit) * unit, Mathf.Round(p.y / unit) * unit);
+            p += ScreenFx.Offset;   // 3:33: 화면 흔들림
             transform.position = new Vector3(p.x, p.y, transform.position.z);
         }
 
@@ -95,12 +109,15 @@ namespace Night0333
             Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
             Cursor.visible = !locked;
             if (locked) skipDelta = true;
+            cursorChangedFrame = Time.frameCount;
         }
 
-        /// <summary>Esc: 커서 풀기 / 화면 클릭: 다시 잠그기. (일시정지 메뉴가 생기면 그쪽으로 옮긴다)</summary>
+        /// <summary>화면 클릭: 커서 다시 잠그기. Esc는 일시정지 메뉴가 있으면 그쪽(PauseMenu), 없으면 커서 풀기.</summary>
         void HandleCursorKeys()
         {
             if (lookLocked) return;
+            // 패널을 닫은 Esc가 같은 프레임에 커서까지 풀어 버리지 않게, 커서 상태가 막 바뀐 프레임은 건너뛴다
+            if (Time.frameCount == cursorChangedFrame) return;
             bool esc, click;
 #if ENABLE_INPUT_SYSTEM
             esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
@@ -109,7 +126,7 @@ namespace Night0333
             esc = Input.GetKeyDown(KeyCode.Escape);
             click = Input.GetMouseButtonDown(0);
 #endif
-            if (esc) SetCursorLocked(false);
+            if (esc && !PauseMenu.Available) SetCursorLocked(false);   // 일시정지 메뉴가 있으면 Esc는 메뉴가 연다
             else if (click && Cursor.lockState != CursorLockMode.Locked) SetCursorLocked(true);
         }
 
@@ -123,7 +140,7 @@ namespace Night0333
         }
 
         /// <summary>화면 픽셀 하나가 월드에서 차지하는 길이.</summary>
-        float UnitsPerScreenPixel() => 2f * cam.orthographicSize / Mathf.Max(1, cam.pixelHeight);
+        public float UnitsPerScreenPixel() => 2f * cam.orthographicSize / Mathf.Max(1, cam.pixelHeight);
 
         /// <summary>카메라 중심이 움직일 수 있는 범위(화면이 매장 그림 밖으로 나가지 않게).</summary>
         Rect Limits()

@@ -1,0 +1,6 @@
+phone_voice.wav (평소 점장 전화·오프닝·엔딩 통화, 2배속)
+phone_voice_slow.wav (3:33 점장 전화, 원래 빠르기)
+  원본: Freesound 530220 "incoherent talking" (beetlemuse)
+  https://freesound.org/s/530220/
+  가공(둘 다): 긴 침묵 줄임, 전화기 음질(300~3400Hz, 회선 잡음), 반복 재생용으로 끝과 처음을 이음. phone_voice는 2배속
+  사용 조건(라이선스)은 위 페이지에서 확인할 것. CC-BY라면 게임 크레딧에 "beetlemuse (Freesound)"를 적어야 한다.

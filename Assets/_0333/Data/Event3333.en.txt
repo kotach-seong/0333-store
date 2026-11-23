@@ -1,0 +1,103 @@
+# 03:33 event lines — English. Same layout as Event3333.txt: the keys before ":" stay in Korean.
+# "/" is a line break in the speech bubble. [n] is the event number (1 Unmanned ~ 20 Whispers).
+
+[1]
+# Items appear with nobody there
+계산: Ring me up.
+계산: Ring me up..
+# If you stall
+화남: Hurry.
+화남: Why aren't you doing it?
+화남: I said hurry.
+화남: What are you doing.
+화남: Ring it up.
+# If you look at the CCTV
+CCTV: Don't look there.
+CCTV: Where are you looking.
+CCTV: I'm right here.
+CCTV: Look at me.
+
+[2]
+# What I say (two are picked). The customer only grins, never answers
+나: Leaving without buying anything?
+나: You were here earlier, right?
+나: Did you forget something?
+나: Do you need a receipt?
+나: Want a bag?
+나: Are you okay?
+나: Why are you smiling?
+나: ...Sir?
+나: Is something wrong?
+나: Please stop smiling.
+나: Hey, say something.
+나: Shall I ring you up?
+나: Are you hurt?
+나: It's really pouring out there, huh?
+나: Your face looks a little different from before.
+나: Do you know me?
+나: Did I give you the wrong change?
+나: ...What's so funny?
+나: Please, just answer me.
+나: Please stop making that face.
+
+[3]
+부탁: Excuse me... please open the door..
+부탁: It's cold... please open the door..
+앎: I know you're in there..
+앎: I can see you in there..
+왜: Why didn't you open it...?
+왜: Why didn't you open it...?/I was waiting.
+
+[7]
+# In order once answered (the last line comes out garbled)
+점장: ...Hello. It's me.
+점장: That transaction, close it now. Hurry.
+점장: As Normal. Close it as Normal.
+점장: Close it. Close-it. Hur-ry-
+점장: Close it now close it now close it now
+
+[8]
+늦음: When it hits 3... it'll be too late.
+
+[9]
+# In order, more and more desperate
+애원: Please... ring me up.
+애원: I have to get home./My kid is waiting.
+애원: Please... just this once...
+애원: Why... why won't you do it?
+애원: Why won't you do it? Why? Why?
+다음: ...You'll do it next time, right?
+
+[11]
+# The endless lines (names of the vanished come first)
+줄: No name
+줄: Predecessor
+줄: Visitor 2
+줄: 0333
+줄: Still here
+줄: Store #3 staff
+줄: Give it back
+줄: Me
+줄: ?????
+줄: Unfinished sale
+줄: Next clerk
+줄: Not closed
+
+[14]
+누구: ...Is someone there?
+누구: ...Is someone behind you?
+
+[16]
+말: ...Don't close it as Normal.
+
+[20]
+말: end it
+말: why won't you
+말: press it
+말: hurry
+말: it's normal
+말: end it for me
+말: close it
+말: press press
+말: you stay here too
+말: normal
