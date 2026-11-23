@@ -144,6 +144,16 @@ docs/screenshots/  이 문서에 쓴 게임 화면(빌드 때 찍은 미리보�
 
 이 게임의 이야기와 등장인물은 모두 허구입니다.
 
+## 배포 · 다운로드
+
+이 게임은 **itch.io에 정식으로 배포했습니다** (2026년 11월 23일).
+
+👉 **[kotach.itch.io/0333-store](https://kotach.itch.io/0333-store)**
+
+- Windows 64비트용 zip(약 58MB)을 무료로 받을 수 있습니다. 후원은 선택입니다.
+- 압축을 풀고 `0333` 폴더 안의 `0333.exe`를 실행하세요.
+- Windows가 파란 "PC 보호" 경고를 띄우면 **추가 정보 → 실행**을 누르면 됩니다. 서명하지 않은 새 실행 파일이라 나오는 경고입니다.
+
 ---
 
 ## English
@@ -154,3 +164,4 @@ docs/screenshots/  이 문서에 쓴 게임 화면(빌드 때 찍은 미리보�
 - Languages: English (default) / Korean / Simplified Chinese (Settings → Language).
 - Controls: mouse to look, left-click to open things and press buttons, drag items down to scan, 1/2 to pick replies, Space/Enter to advance dialogue, Esc to pause.
 - Fonts: Galmuri and Fusion Pixel Font (both SIL OFL 1.1).
+- **Play it:** released on itch.io (Nov 23, 2026) — [kotach.itch.io/0333-store](https://kotach.itch.io/0333-store). Free Windows 64-bit download.
